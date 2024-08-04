@@ -72,6 +72,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/yaml" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/twig/twig" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/api-platform/core" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/lcobucci/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/lcobucci/jwt" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/lexik/jwt-authentication-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/nelmio/cors-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-common" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-docblock" />
