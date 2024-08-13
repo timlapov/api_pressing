@@ -7,6 +7,7 @@ use App\Repository\GenderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: GenderRepository::class)]
 #[ApiResource]
@@ -18,6 +19,7 @@ class Gender
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'gender name is required')]
     private ?string $name = null;
 
     /**
