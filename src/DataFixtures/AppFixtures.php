@@ -20,7 +20,7 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // Категории
+        // Categories
         $categories = [
             'Vêtements' => ['Chemise', 'Pantalon', 'Robe', 'Manteau'],
             'Linge de maison' => ['Draps', 'Serviettes', 'Rideaux'],
@@ -37,31 +37,33 @@ class AppFixtures extends Fixture
                 $subcategory->setName($subcategoryName);
                 $subcategory->setCategory($category);
                 $subcategory->setPriceCoefficient(rand(10, 20) / 10);
+                $subcategory->setImageUrl('https://tse3.mm.bing.net/th?id=OIG3.Ko5ba1z1H8XcUUMRA8OD&pid=ImgGn');
                 $manager->persist($subcategory);
             }
         }
 
-        // Ткани
+        // Fabrics
         $fabrics = ['Coton', 'Laine', 'Soie', 'Lin', 'Cuir', 'Synthétique'];
         foreach ($fabrics as $fabricName) {
             $fabric = new Fabric();
             $fabric->setName($fabricName);
-            $fabric->setDescription("Description pour $fabricName");
+            $fabric->setDescription("Description for $fabricName");
             $fabric->setPriceCoefficient(rand(10, 30) / 10);
             $manager->persist($fabric);
         }
 
-        // Услуги
+        // Services
         $services = ['Lavage', 'Nettoyage à sec', 'Repassage', 'Détachage'];
         foreach ($services as $serviceName) {
             $service = new Service();
             $service->setName($serviceName);
-            $service->setDescription("Description pour $serviceName");
+            $service->setDescription("Description for $serviceName");
             $service->setPrice(rand(500, 2000) / 100);
+            $service->setImageUrl('https://tse3.mm.bing.net/th?id=OIG3.Ko5ba1z1H8XcUUMRA8OD&pid=ImgGn');
             $manager->persist($service);
         }
 
-        // Дополнительные услуги
+        // Additional services
         $additionalServices = ['Express', 'Parfumage', 'Imperméabilisation'];
         foreach ($additionalServices as $additionalServiceName) {
             $additionalService = new AdditionalService();
@@ -70,7 +72,7 @@ class AppFixtures extends Fixture
             $manager->persist($additionalService);
         }
 
-        // Пол
+        // Genders
         $genders = ['Homme', 'Femme', 'Autre'];
         foreach ($genders as $genderName) {
             $gender = new Gender();
@@ -78,7 +80,7 @@ class AppFixtures extends Fixture
             $manager->persist($gender);
         }
 
-        // Страна и город
+        // Country and cities
         $country = new Country();
         $country->setName('France');
         $manager->persist($country);
@@ -91,35 +93,47 @@ class AppFixtures extends Fixture
             $manager->persist($city);
         }
 
-        // Клиенты
+        // Clients
         for ($i = 1; $i <= 10; $i++) {
             $client = new Client();
             $client->setEmail("client$i@example.com");
             $client->setRoles(['ROLE_USER']);
-            $client->setPassword('password');
-            $client->setName("Prénom$i");
-            $client->setSurname("Nom$i");
+            $client->setPassword('password'); // Password will be hashed by event listener
+            $client->setName("FirstName$i");
+            $client->setSurname("LastName$i");
             $client->setBirthdate(new \DateTime('1980-01-01'));
-            $client->setAddress("$i Rue de la Paix");
+            $client->setAddress("$i Peace Street");
             $client->setCity($manager->getRepository(City::class)->findOneBy([]));
             $client->setGender($manager->getRepository(Gender::class)->findOneBy([]));
             $manager->persist($client);
         }
 
-        // Сотрудники
+// Admin (inactive)
+        $admin = new Employee();
+        $admin->setEmail("admin@admin.ru");
+        $admin->setRoles(['ROLE_ADMIN']);
+        $admin->setPassword('password'); // Password will be hashed by event listener
+        $admin->setName("Admin");
+        $admin->setSurname("Admin");
+        $admin->setPhoneNumber("0600000000");
+        $admin->setActive(false);
+        $manager->persist($admin);
+
+// Employees (active)
         for ($i = 1; $i <= 5; $i++) {
             $employee = new Employee();
             $employee->setEmail("employee$i@example.com");
             $employee->setRoles(['ROLE_EMPLOYEE']);
-            $employee->setPassword('password');
-            $employee->setName("EmployéPrénom$i");
-            $employee->setSurname("EmployéNom$i");
+            $employee->setPassword('password'); // Password will be hashed by event listener
+            $employee->setName("EmployeeFirstName$i");
+            $employee->setSurname("EmployeeLastName$i");
             $employee->setPhoneNumber("060000000$i");
+            $employee->setActive(true);
             $manager->persist($employee);
         }
 
-        // Статусы заказов
-        $orderStatuses = ['Créé', 'Payé', 'En attente', 'En traitement', 'Prêt', 'Livré'];
+        // Order statuses
+        $orderStatuses = ['Created', 'Paid', 'Pending', 'Processing', 'Ready', 'Delivered'];
         foreach ($orderStatuses as $statusName) {
             $status = new OrderStatus();
             $status->setName($statusName);

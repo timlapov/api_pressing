@@ -103,6 +103,9 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['employee:read'])]
     private Collection $orders;
 
+    #[ORM\Column]
+    private ?bool $isActive = null;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -143,7 +146,9 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_EMPLOYEE';
+        if (empty($roles)) {
+            $roles[] = 'ROLE_EMPLOYEE';
+        }
 
         return array_unique($roles);
     }
@@ -244,6 +249,18 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
                 $order->setEmployee(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }
