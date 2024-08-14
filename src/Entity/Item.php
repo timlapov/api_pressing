@@ -2,36 +2,85 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\ItemRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ItemRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            security: "is_granted('ROLE_EMPLOYEE')",
+            securityMessage: "Only employees can view the list of items."
+        ),
+        new Get(
+            security: "is_granted('ROLE_EMPLOYEE') or (is_granted('ROLE_CLIENT') and object.getOrder().getClient() == user)",
+            securityMessage: "You can only view items from your own orders or you need to be an employee."
+        ),
+        new Post(
+            security: "is_granted('ROLE_CLIENT') or is_granted('ROLE_EMPLOYEE')",
+            securityMessage: "Only clients or employees can create new items."
+        ),
+        new Put(
+            security: "is_granted('ROLE_EMPLOYEE')",
+            securityMessage: "Only employees can modify items."
+        ),
+        new Patch(
+            security: "is_granted('ROLE_EMPLOYEE')",
+            securityMessage: "Only employees can modify items."
+        ),
+        new Delete(
+            security: "is_granted('ROLE_ADMIN')",
+            securityMessage: "Only administrators can delete items."
+        ),
+    ],
+    normalizationContext: ['groups' => ['item:read']],
+    denormalizationContext: ['groups' => ['item:write']]
+)]
 class Item
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['item:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'items')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['item:read', 'item:write'])]
+    #[ApiProperty(readableLink: true, writableLink: false)]
     private ?Subcategory $subcategory = null;
 
     #[ORM\ManyToOne(inversedBy: 'items')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: "Fabric is required")]
+    #[Groups(['item:read', 'item:write'])]
     private ?Fabric $fabric = null;
 
     #[ORM\ManyToOne(inversedBy: 'items')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: "Service is required")]
+    #[Groups(['item:read', 'item:write'])]
+    #[ApiProperty(readableLink: true, writableLink: false)]
     private ?Service $service = null;
 
     #[ORM\ManyToOne(inversedBy: 'items')]
+    #[Groups(['item:read', 'item:write'])]
     private ?AdditionalService $additionalService = null;
 
     #[ORM\ManyToOne(inversedBy: 'items')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: "Order is required")]
+    #[Groups(['item:read', 'item:write'])]
     private ?Order $order_ = null;
 
     public function getId(): ?int
@@ -98,4 +147,19 @@ class Item
 
         return $this;
     }
+
+    #[Groups(['item:read'])]
+    public function getCalculatedPrice(): float
+    {
+        $price = $this->getService()->getPrice();
+        $price *= $this->getSubcategory()->getPriceCoefficient();
+        $price *= $this->getFabric()->getPriceCoefficient();
+
+        foreach ($this->getAdditionalService() as $additionalService) {
+            $price *= $additionalService->getPriceCoefficient();
+        }
+
+        return $price;
+    }
+
 }

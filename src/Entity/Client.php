@@ -2,8 +2,15 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,23 +23,53 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            security: "is_granted('ROLE_EMPLOYEE') or is_granted('ROLE_ADMIN')",
+            securityMessage: "Only employees and administrators have access to the client list."
+        ),
+        new Get(
+            security: "is_granted('ROLE_EMPLOYEE') or is_granted('ROLE_ADMIN') or object == user",
+            securityMessage: "You can only view your own profile."
+        ),
+        new Post(
+            security: "is_granted('PUBLIC_ACCESS')",
+        ),
+        new Put(
+            security: "is_granted('ROLE_ADMIN') or object == user",
+            securityMessage: "You can only edit your own profile."
+        ),
+        new Patch(
+            security: "is_granted('ROLE_ADMIN') or object == user",
+            securityMessage: "You can only edit your own profile."
+        ),
+        new Delete(
+            security: "is_granted('ROLE_ADMIN')",
+            securityMessage: "Only administrators can delete clients."
+        ),
+    ],
+)]
+#[ApiFilter(SearchFilter::class, properties: ['email' => 'iexact'])]
 class Client implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['client:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
     #[Assert\NotBlank(message: 'email is required')]
     #[Assert\Email(message: 'email is not valid')]
+    #[Groups(['client:read', 'client:write'])]
     private ?string $email = null;
 
     /**
      * @var list<string> The user roles
      */
     #[ORM\Column]
+    #[Groups(['client:read'])]
     private array $roles = [];
 
     /**
@@ -41,28 +78,35 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     #[Assert\NotBlank(message: 'password is required')]
     #[Assert\Length(min: 8, minMessage: 'password must be at least {{ limit }} characters long')]
+    #[Groups(['client:write'])]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'name is required')]
+    #[Groups(['client:read', 'client:write'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'surname is required')]
+    #[Groups(['client:read', 'client:write'])]
     private ?string $surname = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[Groups(['client:read', 'client:write'])]
     private ?\DateTimeInterface $birthdate = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank(message: 'address is required')]
+    #[Groups(['client:read', 'client:write'])]
     private ?string $address = null;
 
     #[ORM\ManyToOne(inversedBy: 'clients')]
     #[Assert\NotBlank(message: 'city is required')]
+    #[Groups(['client:read', 'client:write'])]
     private ?City $city = null;
 
     #[ORM\ManyToOne(inversedBy: 'clients')]
+    #[Groups(['client:read', 'client:write'])]
     private ?Gender $gender = null;
 
     /**

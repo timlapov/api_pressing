@@ -15,17 +15,9 @@ use App\Entity\City;
 use App\Entity\Client;
 use App\Entity\Employee;
 use App\Entity\OrderStatus;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
-    private $passwordHasher;
-
-    public function __construct(UserPasswordHasherInterface $passwordHasher)
-    {
-        $this->passwordHasher = $passwordHasher;
-    }
-
     public function load(ObjectManager $manager): void
     {
         // Категории
@@ -103,8 +95,8 @@ class AppFixtures extends Fixture
         for ($i = 1; $i <= 10; $i++) {
             $client = new Client();
             $client->setEmail("client$i@example.com");
-            $client->setRoles(['ROLE_CLIENT']);
-            $client->setPassword($this->passwordHasher->hashPassword($client, 'password'));
+            $client->setRoles(['ROLE_USER']);
+            $client->setPassword('password');
             $client->setName("Prénom$i");
             $client->setSurname("Nom$i");
             $client->setBirthdate(new \DateTime('1980-01-01'));
@@ -119,7 +111,7 @@ class AppFixtures extends Fixture
             $employee = new Employee();
             $employee->setEmail("employee$i@example.com");
             $employee->setRoles(['ROLE_EMPLOYEE']);
-            $employee->setPassword($this->passwordHasher->hashPassword($employee, 'password'));
+            $employee->setPassword('password');
             $employee->setName("EmployéPrénom$i");
             $employee->setSurname("EmployéNom$i");
             $employee->setPhoneNumber("060000000$i");

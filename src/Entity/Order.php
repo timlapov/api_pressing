@@ -2,49 +2,98 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            security: "is_granted('ROLE_EMPLOYEE')",
+            securityMessage: "Only employees can view the list of all orders."
+        ),
+        new Get(
+            security: "is_granted('ROLE_EMPLOYEE') or (is_granted('ROLE_CLIENT') and object.getClient() == user)",
+            securityMessage: "You can only view your own orders or you need to be an employee."
+        ),
+        new Post(
+            security: "is_granted('ROLE_CLIENT')",
+            securityMessage: "Only clients can create new orders."
+        ),
+        new Put(
+            security: "is_granted('ROLE_EMPLOYEE')",
+            securityMessage: "Only employees can modify the orders."
+        ),
+        new Patch(
+            security: "is_granted('ROLE_EMPLOYEE')",
+            securityMessage: "Only employees can modify the orders."
+        ),
+        new Delete(
+            security: "is_granted('ROLE_ADMIN') or (is_granted('ROLE_CLIENT') and object.getOrder().getClient() == user and object.getOrder().getOrderStatus().getName() == 'CREATED'",
+            securityMessage: "Only administrators can delete orders."
+        ),
+    ],
+    normalizationContext: ['groups' => ['order:read']],
+    denormalizationContext: ['groups' => ['order:write']]
+)]
 class Order
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['order:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: "Order status is required")]
+    #[Groups(['order:read', 'order:write'])]
+//    #[ApiProperty(readableLink: true, writableLink: false)]
     private ?OrderStatus $orderStatus = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['order:read'])]
     private ?\DateTimeInterface $created = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups(['order:read', 'order:write'])]
     private ?\DateTimeInterface $completed = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: "Client is required")]
+    #[Groups(['order:read', 'order:write'])]
     private ?Client $client = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[Groups(['order:read', 'order:write'])]
     private ?Employee $employee = null;
 
     /**
      * @var Collection<int, Item>
      */
     #[ORM\OneToMany(targetEntity: Item::class, mappedBy: 'order_')]
+    #[Groups(['order:read', 'order:write'])]
     private Collection $items;
 
     public function __construct()
     {
         $this->items = new ArrayCollection();
+        $this->created = new \DateTime();
     }
 
     public function getId(): ?int
@@ -140,5 +189,27 @@ class Order
         }
 
         return $this;
+    }
+
+//    #[Groups(['order:read'])]
+//    public function getTotalPrice(): float
+//    {
+//        $total = 0;
+//        foreach ($this->items as $item) {
+//            $price = $item->getService()->getPrice();
+//            $price *= $item->getSubcategory()->getPriceCoefficient();
+//            $price *= $item->getFabric()->getPriceCoefficient();
+//            foreach ($item->getAdditionalServices() as $additionalService) {
+//                $price *= $additionalService->getPriceCoefficient();
+//            }
+//            $total += $price;
+//        }
+//        return $total;
+//    }
+
+    #[Groups(['order:read'])]
+    public function getTotalPrice(): float
+    {
+        return array_sum($this->items->map(fn(Item $item) => $item->getCalculatedPrice())->toArray());
     }
 }

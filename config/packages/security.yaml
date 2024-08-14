@@ -1,8 +1,14 @@
 security:
+    role_hierarchy:
+        ROLE_ADMIN: [ ROLE_EMPLOYEE ]
+        ROLE_EMPLOYEE: [ ROLE_USER ]
+        ROLE_CLIENT: [ ROLE_USER ]
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
         App\Entity\Client:
+            algorithm: 'auto'
+        App\Entity\Employee:
             algorithm: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
@@ -47,10 +53,22 @@ security:
     access_control:
         - { path: ^/doc, roles: PUBLIC_ACCESS }
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api/clients, roles: PUBLIC_ACCESS, methods: [ POST ] }
+        - { path: ^/api/additional_services, roles: PUBLIC_ACCESS, methods: [ GET ] }
+        - { path: ^/api/categories, roles: PUBLIC_ACCESS, methods: [ GET ] }
         - { path: ^/api/cities, roles: PUBLIC_ACCESS, methods: [ GET ] }
+        - { path: ^/api/clients, roles: PUBLIC_ACCESS, methods: [ POST ] }
+        - { path: ^/api/countries, roles: PUBLIC_ACCESS, methods: [ GET ] }
+        - { path: ^/api/employees, roles: ROLE_EMPLOYEE }
+        - { path: ^/api/fabrics, roles: PUBLIC_ACCESS, methods: [ GET ] }
         - { path: ^/api/genders, roles: PUBLIC_ACCESS, methods: [ GET ] }
-        - { path: ^/api/employees, roles: ROLE_ADMIN }
+#        - { path: ^/api/items, roles: [ROLE_CLIENT, ROLE_EMPLOYEE] }
+#        - { path: ^/api/orders, roles: [ROLE_CLIENT, ROLE_EMPLOYEE] }
+        - { path: ^/api/order_statuses, roles: PUBLIC_ACCESS, methods: [ GET ] }
+        - { path: ^/api/order_statuses, roles: ROLE_EMPLOYEE }
+        - { path: ^/api/services, roles: PUBLIC_ACCESS, methods: [ GET ] }
+        - { path: ^/api/services, roles: ROLE_ADMIN }
+        - { path: ^/api/subcategories, roles: PUBLIC_ACCESS, methods: [ GET ] }
+        - { path: ^/api/subcategories, roles: ROLE_ADMIN }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:

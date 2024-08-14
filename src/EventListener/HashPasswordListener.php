@@ -21,7 +21,11 @@ class HashPasswordListener
     {
         $entity = $event->getObject();
 
-        if ($entity instanceof Client || $entity instanceof Employee) {
+        if ($entity instanceof Client) {
+            $entity->setRoles(['ROLE_USER']);
+            $entity->setPassword($this->hasher->hashPassword($entity, $entity->getPassword()));
+        } elseif ($entity instanceof Employee) {
+            $entity->setRoles(['ROLE_EMPLOYEE']);
             $entity->setPassword($this->hasher->hashPassword($entity, $entity->getPassword()));
         }
     }
