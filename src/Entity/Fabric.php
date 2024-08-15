@@ -73,16 +73,16 @@ class Fabric
     #[Groups(['fabric:read', 'fabric:write'])]
     private ?float $priceCoefficient = null;
 
-//    /**
-//     * @var Collection<int, Item>
-//     */
-//    #[ORM\OneToMany(targetEntity: Item::class, mappedBy: 'fabric')]
-//    private Collection $items;
-//
-//    public function __construct()
-//    {
-//        $this->items = new ArrayCollection();
-//    }
+    /**
+     * @var Collection<int, Item>
+     */
+    #[ORM\OneToMany(targetEntity: Item::class, mappedBy: 'fabric')]
+    private Collection $items;
+
+    public function __construct()
+    {
+        $this->items = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -125,33 +125,33 @@ class Fabric
         return $this;
     }
 
-//    /**
-//     * @return Collection<int, Item>
-//     */
-//    public function getItems(): Collection
-//    {
-//        return $this->items;
-//    }
-//
-//    public function addItem(Item $item): static
-//    {
-//        if (!$this->items->contains($item)) {
-//            $this->items->add($item);
-//            $item->setFabric($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeItem(Item $item): static
-//    {
-//        if ($this->items->removeElement($item)) {
-//            // set the owning side to null (unless already changed)
-//            if ($item->getFabric() === $this) {
-//                $item->setFabric(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
+    /**
+     * @return Collection<int, Item>
+     */
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    public function addItem(Item $item): static
+    {
+        if (!$this->items->contains($item)) {
+            $this->items->add($item);
+            $item->setFabric($this);
+        }
+
+        return $this;
+    }
+
+    public function removeItem(Item $item): static
+    {
+        if ($this->items->removeElement($item)) {
+            // set the owning side to null (unless already changed)
+            if ($item->getFabric() === $this) {
+                $item->setFabric(null);
+            }
+        }
+
+        return $this;
+    }
 }

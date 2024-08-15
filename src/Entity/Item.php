@@ -23,11 +23,11 @@ use Symfony\Component\Validator\Constraints as Assert;
             securityMessage: "Only employees can view the list of items."
         ),
         new Get(
-            security: "is_granted('ROLE_EMPLOYEE') or (is_granted('ROLE_CLIENT') and object.getOrder().getClient() == user)",
+            security: "is_granted('ROLE_EMPLOYEE') or (is_granted('ROLE_USER') and object.getOrder().getClient() == user)",
             securityMessage: "You can only view items from your own orders or you need to be an employee."
         ),
         new Post(
-            security: "is_granted('ROLE_CLIENT') or is_granted('ROLE_EMPLOYEE')",
+            security: "is_granted('ROLE_USER') or is_granted('ROLE_EMPLOYEE')",
             securityMessage: "Only clients or employees can create new items."
         ),
         new Put(
@@ -56,20 +56,23 @@ class Item
 
     #[ORM\ManyToOne(inversedBy: 'items')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['item:read', 'item:write'])]
-    #[ApiProperty(readableLink: true, writableLink: false)]
+//    #[Groups(['item:read', 'item:write'])]
+    #[ApiProperty(readableLink: true, writableLink: true)]
+    #[Groups(['order:read', 'order:write'])]
     private ?Subcategory $subcategory = null;
 
     #[ORM\ManyToOne(inversedBy: 'items')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull(message: "Fabric is required")]
-    #[Groups(['item:read', 'item:write'])]
+//    #[Groups(['item:read', 'item:write'])]
+    #[Groups(['order:read', 'order:write'])]
     private ?Fabric $fabric = null;
 
     #[ORM\ManyToOne(inversedBy: 'items')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull(message: "Service is required")]
-    #[Groups(['item:read', 'item:write'])]
+//    #[Groups(['item:read', 'item:write'])]
+    #[Groups(['order:read', 'order:write'])]
     #[ApiProperty(readableLink: true, writableLink: false)]
     private ?Service $service = null;
 
@@ -151,12 +154,16 @@ class Item
     #[Groups(['item:read'])]
     public function getCalculatedPrice(): float
     {
-        $price = $this->getService()->getPrice();
-        $price *= $this->getSubcategory()->getPriceCoefficient();
-        $price *= $this->getFabric()->getPriceCoefficient();
+        if ($this->service === null || $this->subcategory === null || $this->fabric === null) {
+            return 0.0;
+        }
 
-        foreach ($this->getAdditionalService() as $additionalService) {
-            $price *= $additionalService->getPriceCoefficient();
+        $price = $this->service->getPrice();
+        $price *= $this->subcategory->getPriceCoefficient();
+        $price *= $this->fabric->getPriceCoefficient();
+
+        if ($this->additionalService !== null) {
+            $price *= $this->additionalService->getPriceCoefficient();
         }
 
         return $price;

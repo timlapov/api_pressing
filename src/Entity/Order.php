@@ -27,12 +27,14 @@ use Symfony\Component\Validator\Constraints as Assert;
             securityMessage: "Only employees can view the list of all orders."
         ),
         new Get(
-            security: "is_granted('ROLE_EMPLOYEE') or (is_granted('ROLE_CLIENT') and object.getClient() == user)",
+            security: "is_granted('ROLE_EMPLOYEE') or (is_granted('ROLE_USER') and object.getClient() == user)",
             securityMessage: "You can only view your own orders or you need to be an employee."
         ),
         new Post(
-            security: "is_granted('ROLE_CLIENT')",
-            securityMessage: "Only clients can create new orders."
+            denormalizationContext: ['groups' => ['order:write'], 'enable_max_depth' => true],
+            security: "is_granted('ROLE_USER')",
+            securityMessage: "Only clients can create new orders.",
+            validationContext: ['groups' => ['Default', 'order:write']]
         ),
         new Put(
             security: "is_granted('ROLE_EMPLOYEE')",
@@ -43,7 +45,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             securityMessage: "Only employees can modify the orders."
         ),
         new Delete(
-            security: "is_granted('ROLE_ADMIN') or (is_granted('ROLE_CLIENT') and object.getOrder().getClient() == user and object.getOrder().getOrderStatus().getName() == 'CREATED'",
+            security: "is_granted('ROLE_ADMIN') or (is_granted('ROLE_USER') and object.getOrder().getClient() == user and object.getOrder().getOrderStatus().getName() == 'CREATED'",
             securityMessage: "Only administrators can delete orders."
         ),
     ],
@@ -86,8 +88,9 @@ class Order
     /**
      * @var Collection<int, Item>
      */
-    #[ORM\OneToMany(targetEntity: Item::class, mappedBy: 'order_')]
+    #[ORM\OneToMany(targetEntity: Item::class, mappedBy: 'order_', cascade: ['persist'])]
     #[Groups(['order:read', 'order:write'])]
+    #[ApiProperty(readableLink: true, writableLink: true)]
     private Collection $items;
 
     public function __construct()
@@ -210,6 +213,10 @@ class Order
     #[Groups(['order:read'])]
     public function getTotalPrice(): float
     {
+        if ($this->items->isEmpty()) {
+            return 0.0;
+        }
+
         return array_sum($this->items->map(fn(Item $item) => $item->getCalculatedPrice())->toArray());
     }
 }
