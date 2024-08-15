@@ -133,7 +133,7 @@ class AppFixtures extends Fixture
         }
 
         // Order statuses
-        $orderStatuses = ['Created', 'Paid', 'Pending', 'Processing', 'Ready', 'Delivered'];
+        $orderStatuses = ['Créé', 'Payé', 'En attente', 'En traitement', 'Prêt', 'Livré'];
         foreach ($orderStatuses as $statusName) {
             $status = new OrderStatus();
             $status->setName($statusName);

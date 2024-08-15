@@ -1,0 +1,24 @@
+<style>
+    .order-items {
+        margin-top: 10px;
+    }
+    .order-item {
+        margin-bottom: 5px;
+    }
+    .order-item a {
+        text-decoration: none;
+    }
+</style>
+
+<div class="order-items">
+    {% for item in field.value %}
+        <div class="order-item">
+            <a href="{{ ea_url()
+                .setController('App\\Controller\\Admin\\ItemCrudController')
+                .setAction('detail')
+                .setEntityId(item.id) }}">
+                Item #{{ item.id }} - {{ item.subcategory.name }} ({{ item.fabric.name }}) : {{ item.service.name }}
+            </a>
+        </div>
+    {% endfor %}
+</div>

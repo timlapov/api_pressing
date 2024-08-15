@@ -88,7 +88,7 @@ class Order
     /**
      * @var Collection<int, Item>
      */
-    #[ORM\OneToMany(targetEntity: Item::class, mappedBy: 'order_', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: Item::class, mappedBy: 'order_', cascade: ['persist', 'remove'])]
     #[Groups(['order:read', 'order:write'])]
     #[ApiProperty(readableLink: true, writableLink: true)]
     private Collection $items;

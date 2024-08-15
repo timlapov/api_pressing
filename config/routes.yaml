@@ -8,7 +8,10 @@ api_doc:
     path: /doc
     controller: api_platform.swagger_ui.action
 
-api_login:
+api_login_check:
     path: /api/login
-    methods: [POST]
+    methods: [ 'POST' ]
 
+app_logout:
+    path: /admin/logout
+    methods: GET

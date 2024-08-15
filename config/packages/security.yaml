@@ -18,18 +18,16 @@ security:
                 class: App\Entity\Employee
                 property: email
         app_client_provider:
-                entity:
-                    class: App\Entity\Client
-                    property: email
+            entity:
+                class: App\Entity\Client
+                property: email
         all_users_provider:
                 chain:
                     providers: [ 'app_employee_provider', 'app_client_provider' ]
         # used to reload user from session & other features (e.g. switch_user)
     firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-        main:
+        api:
+            pattern: ^/api/
             stateless: true
             provider: all_users_provider
             json_login:
@@ -38,9 +36,25 @@ security:
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
-#                logout:
-#                    path: app_logout
             jwt: ~
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        easyadmin:
+            pattern: ^/admin
+            stateless: false
+            lazy: true
+            provider: app_employee_provider
+#            provider: all_users_provider
+            form_login:
+                login_path: admin_login
+                check_path: admin_login
+                default_target_path: admin
+                username_parameter: email
+                password_parameter: password
+            logout:
+                path: admin_logout
+                target: admin
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -69,6 +83,8 @@ security:
         - { path: ^/api/services, roles: ROLE_ADMIN }
         - { path: ^/api/subcategories, roles: PUBLIC_ACCESS, methods: [ GET ] }
         - { path: ^/api/subcategories, roles: ROLE_ADMIN }
+        - { path: ^/admin/login, roles: PUBLIC_ACCESS }
+        - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
