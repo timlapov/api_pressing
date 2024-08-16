@@ -14,6 +14,7 @@ use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -92,6 +93,16 @@ class Order
     #[Groups(['order:read', 'order:write'])]
     #[ApiProperty(readableLink: true, writableLink: true)]
     private Collection $items;
+
+    #[ORM\Column]
+    #[Groups(['order:read', 'order:write'])]
+    private ?bool $express = false;
+
+    private ?EntityManagerInterface $entityManager = null;
+    public function setEntityManager(EntityManagerInterface $entityManager): void
+    {
+        $this->entityManager = $entityManager;
+    }
 
     public function __construct()
     {
@@ -194,29 +205,29 @@ class Order
         return $this;
     }
 
-//    #[Groups(['order:read'])]
-//    public function getTotalPrice(): float
-//    {
-//        $total = 0;
-//        foreach ($this->items as $item) {
-//            $price = $item->getService()->getPrice();
-//            $price *= $item->getSubcategory()->getPriceCoefficient();
-//            $price *= $item->getFabric()->getPriceCoefficient();
-//            foreach ($item->getAdditionalServices() as $additionalService) {
-//                $price *= $additionalService->getPriceCoefficient();
-//            }
-//            $total += $price;
-//        }
-//        return $total;
-//    }
 
     #[Groups(['order:read'])]
     public function getTotalPrice(): float
     {
-        if ($this->items->isEmpty()) {
-            return 0.0;
+        $total = array_sum($this->items->map(fn(Item $item) => $item->getCalculatedPrice())->toArray());
+
+        if ($this->express) {
+            $coefficients = $this->entityManager->getRepository(ServiceCoefficients::class)->findOneBy([]);
+            $total *= $coefficients->getExpressCoefficient();
         }
 
-        return array_sum($this->items->map(fn(Item $item) => $item->getCalculatedPrice())->toArray());
+        return $total;
+    }
+
+    public function isExpress(): ?bool
+    {
+        return $this->express;
+    }
+
+    public function setExpress(bool $express): static
+    {
+        $this->express = $express;
+
+        return $this;
     }
 }

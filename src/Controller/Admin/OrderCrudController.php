@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
@@ -61,7 +62,10 @@ class OrderCrudController extends AbstractCrudController
         yield DateTimeField::new('completed')
             ->setFormat('dd/MM/yyyy HH:mm')
             ->setTimezone('Europe/Paris')
-            ->setDisabled();;
+            ->setDisabled();
+
+        yield BooleanField::new('express')
+            ->setLabel('Express');
 
         if (Crud::PAGE_DETAIL === $pageName || Crud::PAGE_INDEX === $pageName) {
             yield MoneyField::new('totalPrice')

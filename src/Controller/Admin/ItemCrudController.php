@@ -8,10 +8,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ItemCrudController extends AbstractCrudController
 {
@@ -33,32 +32,39 @@ class ItemCrudController extends AbstractCrudController
         yield IdField::new('id')->hideOnForm();
 
         yield AssociationField::new('subcategory')
-            ->setFormTypeOption('choice_label', function ($subcategory) {
-                return $subcategory->getName();
+            ->setFormTypeOption('choice_label', 'name')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getSubcategory() ? $entity->getSubcategory()->getName() : '';
             });
 
         yield AssociationField::new('fabric')
-            ->setFormTypeOption('choice_label', function ($fabric) {
-                return $fabric->getName();
+            ->setFormTypeOption('choice_label', 'name')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getFabric() ? $entity->getFabric()->getName() : '';
             });
 
         yield AssociationField::new('service')
-            ->setFormTypeOption('choice_label', function ($service) {
-                return $service->getName();
+            ->setFormTypeOption('choice_label', 'name')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getService() ? $entity->getService()->getName() : '';
             })
             ->setDisabled(Crud::PAGE_EDIT !== $pageName);
 
-        yield AssociationField::new('additionalService')
-            ->setFormTypeOption('choice_label', function ($additionalService) {
-                return $additionalService ? $additionalService->getName() : 'None';
-            })
-            ->setRequired(false);
-
         yield AssociationField::new('order_')
+            ->setLabel('Order')
             ->setFormTypeOption('choice_label', function ($order) {
                 return $order ? 'Order #' . $order->getId() : 'None';
             })
+            ->formatValue(function ($value, $entity) {
+                return $entity->getOrder() ? 'Order #' . $entity->getOrder()->getId() : 'None';
+            })
             ->setDisabled();
+
+        yield BooleanField::new('delicate')
+            ->setLabel('Délicatement');
+
+        yield BooleanField::new('perfuming')
+            ->setLabel('Parfumage');
 
         yield MoneyField::new('calculatedPrice')
             ->setCurrency('EUR')
@@ -70,6 +76,7 @@ class ItemCrudController extends AbstractCrudController
     {
         return $crud
             ->setDefaultSort(['id' => 'DESC'])
+            ->setSearchFields(['subcategory.name', 'fabric.name', 'service.name', 'additionalService.name', 'order_.id'])
             ->setEntityLabelInSingular('Item')
             ->setEntityLabelInPlural('Items');
     }

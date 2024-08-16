@@ -2,8 +2,19 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Category;
+use App\Entity\City;
+use App\Entity\Client;
+use App\Entity\Country;
+use App\Entity\Employee;
+use App\Entity\Fabric;
+use App\Entity\Gender;
 use App\Entity\Item;
 use App\Entity\Order;
+use App\Entity\OrderStatus;
+use App\Entity\Service;
+use App\Entity\ServiceCoefficients;
+use App\Entity\Subcategory;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -72,8 +83,17 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Orders', 'fas fa-list', Order::class);
+        yield MenuItem::linkToCrud('Coefficients', 'fas fa-list', ServiceCoefficients::class);
+        yield MenuItem::linkToCrud('Categories', 'fas fa-list', Category::class);
+        yield MenuItem::linkToCrud('Cities', 'fas fa-list', City::class);
+        yield MenuItem::linkToCrud('Countries', 'fas fa-list', Country::class);
+        yield MenuItem::linkToCrud('Clients', 'fas fa-list', Client::class);
+        yield MenuItem::linkToCrud('Employees', 'fas fa-list', Employee::class);
+        yield MenuItem::linkToCrud('Fabrics', 'fas fa-list', Fabric::class);
+        yield MenuItem::linkToCrud('Genders', 'fas fa-list', Gender::class);
         yield MenuItem::linkToCrud('Items', 'fas fa-list', Item::class);
-        //yield MenuItem::linkToLogout('Logout', 'fa fa-exit');
-        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+        yield MenuItem::linkToCrud('Order Statuses', 'fas fa-list', OrderStatus::class);
+        yield MenuItem::linkToCrud('Services', 'fas fa-list', Service::class);
+        yield MenuItem::linkToCrud('Subcategories', 'fas fa-list', Subcategory::class);
     }
 }

@@ -2,13 +2,13 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\ServiceCoefficients;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Category;
 use App\Entity\Subcategory;
 use App\Entity\Fabric;
 use App\Entity\Service;
-use App\Entity\AdditionalService;
 use App\Entity\Gender;
 use App\Entity\Country;
 use App\Entity\City;
@@ -37,7 +37,7 @@ class AppFixtures extends Fixture
                 $subcategory->setName($subcategoryName);
                 $subcategory->setCategory($category);
                 $subcategory->setPriceCoefficient(rand(10, 20) / 10);
-                $subcategory->setImageUrl('https://tse3.mm.bing.net/th?id=OIG3.Ko5ba1z1H8XcUUMRA8OD&pid=ImgGn');
+                $subcategory->setImageUrl('placeholder.webp');
                 $manager->persist($subcategory);
             }
         }
@@ -59,17 +59,8 @@ class AppFixtures extends Fixture
             $service->setName($serviceName);
             $service->setDescription("Description for $serviceName");
             $service->setPrice(rand(500, 2000) / 100);
-            $service->setImageUrl('https://tse3.mm.bing.net/th?id=OIG3.Ko5ba1z1H8XcUUMRA8OD&pid=ImgGn');
+            $service->setImageUrl('placeholder.webp');
             $manager->persist($service);
-        }
-
-        // Additional services
-        $additionalServices = ['Express', 'Parfumage', 'Imperméabilisation'];
-        foreach ($additionalServices as $additionalServiceName) {
-            $additionalService = new AdditionalService();
-            $additionalService->setName($additionalServiceName);
-            $additionalService->setPriceCoefficient(rand(110, 150) / 100);
-            $manager->persist($additionalService);
         }
 
         // Genders
@@ -139,6 +130,13 @@ class AppFixtures extends Fixture
             $status->setName($statusName);
             $manager->persist($status);
         }
+
+        // Service coefficients
+        $coefficients = new ServiceCoefficients();
+        $coefficients->setExpressCoefficient(1.3);
+        $coefficients->setDelicateCoefficient(1.1);
+        $coefficients->setPerfumingCoefficient(1.05);
+        $manager->persist($coefficients);
 
         $manager->flush();
     }

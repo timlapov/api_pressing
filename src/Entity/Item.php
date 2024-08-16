@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\ItemRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -77,14 +78,24 @@ class Item
     private ?Service $service = null;
 
     #[ORM\ManyToOne(inversedBy: 'items')]
-    #[Groups(['item:read', 'item:write'])]
-    private ?AdditionalService $additionalService = null;
-
-    #[ORM\ManyToOne(inversedBy: 'items')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull(message: "Order is required")]
     #[Groups(['item:read', 'item:write'])]
     private ?Order $order_ = null;
+
+    #[ORM\Column]
+    #[Groups(['item:read', 'item:write'])]
+    private ?bool $delicate = false;
+
+    #[ORM\Column]
+    #[Groups(['item:read', 'item:write'])]
+    private ?bool $perfuming = false;
+
+    private ?EntityManagerInterface $entityManager = null;
+    public function setEntityManager(EntityManagerInterface $entityManager): void
+    {
+        $this->entityManager = $entityManager;
+    }
 
     public function getId(): ?int
     {
@@ -127,18 +138,6 @@ class Item
         return $this;
     }
 
-    public function getAdditionalService(): ?AdditionalService
-    {
-        return $this->additionalService;
-    }
-
-    public function setAdditionalService(?AdditionalService $additionalService): static
-    {
-        $this->additionalService = $additionalService;
-
-        return $this;
-    }
-
     public function getOrder(): ?Order
     {
         return $this->order_;
@@ -162,11 +161,41 @@ class Item
         $price *= $this->subcategory->getPriceCoefficient();
         $price *= $this->fabric->getPriceCoefficient();
 
-        if ($this->additionalService !== null) {
-            $price *= $this->additionalService->getPriceCoefficient();
+        $coefficients = $this->entityManager->getRepository(ServiceCoefficients::class)->findOneBy([]);
+
+        if ($this->delicate) {
+            $price *= $coefficients->getDelicateCoefficient();
+        }
+
+        if ($this->perfuming) {
+            $price *= $coefficients->getPerfumingCoefficient();
         }
 
         return $price;
+    }
+
+    public function isDelicate(): ?bool
+    {
+        return $this->delicate;
+    }
+
+    public function setDelicate(bool $delicate): static
+    {
+        $this->delicate = $delicate;
+
+        return $this;
+    }
+
+    public function isPerfuming(): ?bool
+    {
+        return $this->perfuming;
+    }
+
+    public function setPerfuming(bool $perfuming): static
+    {
+        $this->perfuming = $perfuming;
+
+        return $this;
     }
 
 }
