@@ -37,12 +37,6 @@ class ItemCrudController extends AbstractCrudController
                 return $entity->getSubcategory() ? $entity->getSubcategory()->getName() : '';
             });
 
-        yield AssociationField::new('fabric')
-            ->setFormTypeOption('choice_label', 'name')
-            ->formatValue(function ($value, $entity) {
-                return $entity->getFabric() ? $entity->getFabric()->getName() : '';
-            });
-
         yield AssociationField::new('service')
             ->setFormTypeOption('choice_label', 'name')
             ->formatValue(function ($value, $entity) {

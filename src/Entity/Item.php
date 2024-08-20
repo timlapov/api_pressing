@@ -64,13 +64,6 @@ class Item
 
     #[ORM\ManyToOne(inversedBy: 'items')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotNull(message: "Fabric is required")]
-//    #[Groups(['item:read', 'item:write'])]
-    #[Groups(['order:read', 'order:write'])]
-    private ?Fabric $fabric = null;
-
-    #[ORM\ManyToOne(inversedBy: 'items')]
-    #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull(message: "Service is required")]
 //    #[Groups(['item:read', 'item:write'])]
     #[Groups(['order:read', 'order:write'])]
@@ -114,18 +107,6 @@ class Item
         return $this;
     }
 
-    public function getFabric(): ?Fabric
-    {
-        return $this->fabric;
-    }
-
-    public function setFabric(?Fabric $fabric): static
-    {
-        $this->fabric = $fabric;
-
-        return $this;
-    }
-
     public function getService(): ?Service
     {
         return $this->service;
@@ -153,13 +134,12 @@ class Item
     #[Groups(['item:read'])]
     public function getCalculatedPrice(): float
     {
-        if ($this->service === null || $this->subcategory === null || $this->fabric === null) {
+        if ($this->service === null || $this->subcategory === null) {
             return 0.0;
         }
 
         $price = $this->service->getPrice();
         $price *= $this->subcategory->getPriceCoefficient();
-        $price *= $this->fabric->getPriceCoefficient();
 
         $coefficients = $this->entityManager->getRepository(ServiceCoefficients::class)->findOneBy([]);
 

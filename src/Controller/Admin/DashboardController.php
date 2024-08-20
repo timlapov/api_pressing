@@ -7,7 +7,6 @@ use App\Entity\City;
 use App\Entity\Client;
 use App\Entity\Country;
 use App\Entity\Employee;
-use App\Entity\Fabric;
 use App\Entity\Gender;
 use App\Entity\Item;
 use App\Entity\Order;
@@ -89,7 +88,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Countries', 'fas fa-list', Country::class);
         yield MenuItem::linkToCrud('Clients', 'fas fa-list', Client::class);
         yield MenuItem::linkToCrud('Employees', 'fas fa-list', Employee::class);
-        yield MenuItem::linkToCrud('Fabrics', 'fas fa-list', Fabric::class);
         yield MenuItem::linkToCrud('Genders', 'fas fa-list', Gender::class);
         yield MenuItem::linkToCrud('Items', 'fas fa-list', Item::class);
         yield MenuItem::linkToCrud('Order Statuses', 'fas fa-list', OrderStatus::class);

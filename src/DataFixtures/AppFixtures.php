@@ -7,7 +7,6 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Category;
 use App\Entity\Subcategory;
-use App\Entity\Fabric;
 use App\Entity\Service;
 use App\Entity\Gender;
 use App\Entity\Country;
@@ -20,45 +19,94 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // Categories
+// Categories
         $categories = [
-            'Vêtements' => ['Chemise', 'Pantalon', 'Robe', 'Manteau'],
-            'Linge de maison' => ['Draps', 'Serviettes', 'Rideaux'],
-            'Accessoires' => ['Sac', 'Chaussures', 'Ceinture']
+            'Chemises et chemisiers' => [
+                'Chemise' => 1.1,
+                'Chemisier' => 2.1,
+                'Polo' => 1.5,
+                'T-shirt' => 1.8
+            ],
+            'Pantalons et jupes' => [
+                'Pantalon' => 2.3,
+                'Jupe' => 2.3,
+                'Short' => 2.1
+            ],
+            'Costumes' => [
+                'Costume 2 pièces' => 4.9,
+                'Costume 3 pièces' => 6.4
+            ],
+            'Robes' => [
+                'Robe simple' => 3.8,
+                'Robe de soirée' => 6.4,
+                'Combinaison' => 4.9
+            ],
+            'Vêtements d\'extérieur' => [
+                'Veste' => 3.3,
+                'Manteau' => 5.6,
+                'Trench' => 6.6,
+                'Doudoune' => 7.7
+            ],
+            'Accessoires' => [
+                'Foulard' => 2.1,
+                'Cravate' => 2.1,
+                'Chaussettes' => 0.8
+            ],
+            'Linge de maison' => [
+                'Drap simple' => 1.3,
+                'Drap double' => 1.8,
+                'Housse de couette simple' => 2.1,
+                'Housse de couette double' => 2.8,
+                'Taie d\'oreiller' => 1.0
+            ],
+            'Articles en cuir' => [
+                'Chaussures en cuir' => 7.0,
+                'Bottes en cuir' => 8.0,
+                'Ceinture en cuir' => 4.0,
+                'Sac en cuir' => 9.0
+            ]
         ];
 
-        foreach ($categories as $categoryName => $subcategoryNames) {
+        foreach ($categories as $categoryName => $subcategories) {
             $category = new Category();
             $category->setName($categoryName);
             $manager->persist($category);
 
-            foreach ($subcategoryNames as $subcategoryName) {
+            foreach ($subcategories as $subcategoryName => $priceCoefficient) {
                 $subcategory = new Subcategory();
                 $subcategory->setName($subcategoryName);
                 $subcategory->setCategory($category);
-                $subcategory->setPriceCoefficient(rand(10, 20) / 10);
+                $subcategory->setPriceCoefficient($priceCoefficient);
                 $subcategory->setImageUrl('placeholder.webp');
                 $manager->persist($subcategory);
             }
         }
 
-        // Fabrics
-        $fabrics = ['Coton', 'Laine', 'Soie', 'Lin', 'Cuir', 'Synthétique'];
-        foreach ($fabrics as $fabricName) {
-            $fabric = new Fabric();
-            $fabric->setName($fabricName);
-            $fabric->setDescription("Description for $fabricName");
-            $fabric->setPriceCoefficient(rand(10, 30) / 10);
-            $manager->persist($fabric);
-        }
-
         // Services
-        $services = ['Lavage', 'Nettoyage à sec', 'Repassage', 'Détachage'];
-        foreach ($services as $serviceName) {
+        $services = [
+            'Lavage' => [
+                'description' => 'Pour le linge de tous les jours, les draps et les serviettes.',
+                'price' => 1.9
+            ],
+            'Nettoyage à sec' => [
+                'description' => 'Il s\'agit d\'un traitement de nettoyage professionnel utilisant des solvants pour éliminer les taches et la saleté des tissus délicats.',
+                'price' => 3.9
+            ],
+            'Blanchiment' => [
+                'description' => 'Pour éliminer les taches tenaces et retrouver leur blancheur d\'origine.',
+                'price' => 2.9
+            ],
+            'Traitement anti-taches' => [
+                'description' => 'Pour protéger les vêtements contre les taches futures.',
+                'price' => 2.9
+            ]
+        ];
+
+        foreach ($services as $serviceName => $serviceData) {
             $service = new Service();
             $service->setName($serviceName);
-            $service->setDescription("Description for $serviceName");
-            $service->setPrice(rand(500, 2000) / 100);
+            $service->setDescription($serviceData['description']);
+            $service->setPrice($serviceData['price']);
             $service->setImageUrl('placeholder.webp');
             $manager->persist($service);
         }
@@ -135,7 +183,7 @@ class AppFixtures extends Fixture
         $coefficients = new ServiceCoefficients();
         $coefficients->setExpressCoefficient(1.3);
         $coefficients->setIroningCoefficient(1.1);
-        $coefficients->setPerfumingCoefficient(1.05);
+        $coefficients->setPerfumingCoefficient(1.00);
         $manager->persist($coefficients);
 
         $manager->flush();
