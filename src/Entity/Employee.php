@@ -92,7 +92,6 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 15)]
     #[Assert\NotBlank(message: 'phone is required')]
-//    #[Assert\Regex(pattern: "/^\+?[1-9]\d{1,14}$/")]
     #[Groups(['employee:read', 'employee:write'])]
     private ?string $phoneNumber = null;
 

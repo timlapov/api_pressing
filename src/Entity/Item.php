@@ -85,7 +85,7 @@ class Item
 
     #[ORM\Column]
     #[Groups(['item:read', 'item:write'])]
-    private ?bool $delicate = false;
+    private ?bool $ironing = false;
 
     #[ORM\Column]
     #[Groups(['item:read', 'item:write'])]
@@ -163,8 +163,8 @@ class Item
 
         $coefficients = $this->entityManager->getRepository(ServiceCoefficients::class)->findOneBy([]);
 
-        if ($this->delicate) {
-            $price *= $coefficients->getDelicateCoefficient();
+        if ($this->ironing) {
+            $price *= $coefficients->getIroningCoefficient();
         }
 
         if ($this->perfuming) {
@@ -174,14 +174,14 @@ class Item
         return $price;
     }
 
-    public function isDelicate(): ?bool
+    public function isIroning(): ?bool
     {
-        return $this->delicate;
+        return $this->ironing;
     }
 
-    public function setDelicate(bool $delicate): static
+    public function setIroning(bool $ironing): static
     {
-        $this->delicate = $delicate;
+        $this->ironing = $ironing;
 
         return $this;
     }

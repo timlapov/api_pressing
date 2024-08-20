@@ -26,6 +26,8 @@ class EmployeeCrudController extends AbstractCrudController
         yield IdField::new('id')->hideOnForm();
         yield EmailField::new('email')
             ->hideOnIndex();
+        yield TextField::new('password')
+            ->hideOnIndex();
         yield TextField::new('name')
             ->hideOnIndex();
         yield TextField::new('surname');

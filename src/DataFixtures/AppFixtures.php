@@ -64,7 +64,7 @@ class AppFixtures extends Fixture
         }
 
         // Genders
-        $genders = ['Homme', 'Femme', 'Autre'];
+        $genders = ['Homme', 'Femme', 'Personne non binaire', 'Autre'];
         foreach ($genders as $genderName) {
             $gender = new Gender();
             $gender->setName($genderName);
@@ -134,7 +134,7 @@ class AppFixtures extends Fixture
         // Service coefficients
         $coefficients = new ServiceCoefficients();
         $coefficients->setExpressCoefficient(1.3);
-        $coefficients->setDelicateCoefficient(1.1);
+        $coefficients->setIroningCoefficient(1.1);
         $coefficients->setPerfumingCoefficient(1.05);
         $manager->persist($coefficients);
 

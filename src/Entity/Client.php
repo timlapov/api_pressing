@@ -49,6 +49,8 @@ use Symfony\Component\Validator\Constraints as Assert;
             securityMessage: "Only administrators can delete clients."
         ),
     ],
+    normalizationContext: ['groups' => ['client:read']],
+    denormalizationContext: ['groups' => ['client:write']]
 )]
 #[ApiFilter(SearchFilter::class, properties: ['email' => 'iexact'])]
 class Client implements UserInterface, PasswordAuthenticatedUserInterface
@@ -113,6 +115,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Order>
      */
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'client')]
+    #[Groups(['client:read'])]
     private Collection $orders;
 
     public function __construct()

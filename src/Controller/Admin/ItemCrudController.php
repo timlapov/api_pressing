@@ -60,8 +60,8 @@ class ItemCrudController extends AbstractCrudController
             })
             ->setDisabled();
 
-        yield BooleanField::new('delicate')
-            ->setLabel('Délicatement');
+        yield BooleanField::new('ironing')
+            ->setLabel('Repassage');
 
         yield BooleanField::new('perfuming')
             ->setLabel('Parfumage');

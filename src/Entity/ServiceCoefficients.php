@@ -17,7 +17,7 @@ class ServiceCoefficients
     private ?float $expressCoefficient = null;
 
     #[ORM\Column]
-    private ?float $delicateCoefficient = null;
+    private ?float $ironingCoefficient = null;
 
     #[ORM\Column]
     private ?float $perfumingCoefficient = null;
@@ -39,14 +39,14 @@ class ServiceCoefficients
         return $this;
     }
 
-    public function getDelicateCoefficient(): ?float
+    public function getIroningCoefficient(): ?float
     {
-        return $this->delicateCoefficient;
+        return $this->ironingCoefficient;
     }
 
-    public function setDelicateCoefficient(float $delicateCoefficient): static
+    public function setIroningCoefficient(float $ironingCoefficient): static
     {
-        $this->delicateCoefficient = $delicateCoefficient;
+        $this->ironingCoefficient = $ironingCoefficient;
 
         return $this;
     }
