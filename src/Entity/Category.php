@@ -50,12 +50,12 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['category:read'])]
+    #[Groups(['category:read', 'client:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Name is required')]
-    #[Groups(['category:read', 'category:write'])]
+    #[Groups(['category:read', 'category:write', 'client:read'])]
     private ?string $name = null;
 
     /**

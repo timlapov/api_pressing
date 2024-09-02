@@ -82,12 +82,12 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'name is required')]
-    #[Groups(['employee:read', 'employee:write'])]
+    #[Groups(['employee:read', 'employee:write', 'client:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'surname is required')]
-    #[Groups(['employee:read', 'employee:write'])]
+    #[Groups(['employee:read', 'employee:write', 'client:read'])]
     private ?string $surname = null;
 
     #[ORM\Column(length: 15)]

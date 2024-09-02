@@ -58,22 +58,22 @@ class Order
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['order:read'])]
+    #[Groups(['order:read', 'client:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull(message: "Order status is required")]
-    #[Groups(['order:read', 'order:write'])]
+    #[Groups(['order:read', 'order:write', 'client:read'])]
 //    #[ApiProperty(readableLink: true, writableLink: false)]
     private ?OrderStatus $orderStatus = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['order:read'])]
+    #[Groups(['order:read', 'client:read'])]
     private ?\DateTimeInterface $created = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Groups(['order:read', 'order:write'])]
+    #[Groups(['order:read', 'order:write', 'client:read'])]
     private ?\DateTimeInterface $completed = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
@@ -83,19 +83,19 @@ class Order
     private ?Client $client = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
-    #[Groups(['order:read', 'order:write'])]
+    #[Groups(['order:read', 'order:write', 'client:read'])]
     private ?Employee $employee = null;
 
     /**
      * @var Collection<int, Item>
      */
     #[ORM\OneToMany(targetEntity: Item::class, mappedBy: 'order_', cascade: ['persist', 'remove'])]
-    #[Groups(['order:read', 'order:write'])]
+    #[Groups(['order:read', 'order:write', 'client:read'])]
     #[ApiProperty(readableLink: true, writableLink: true)]
     private Collection $items;
 
     #[ORM\Column]
-    #[Groups(['order:read', 'order:write'])]
+    #[Groups(['order:read', 'order:write', 'client:read'])]
     private ?bool $express = false;
 
     private ?EntityManagerInterface $entityManager = null;

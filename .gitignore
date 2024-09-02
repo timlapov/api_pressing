@@ -13,3 +13,10 @@
 ###> lexik/jwt-authentication-bundle ###
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
+
+.DS_Store
+config/.DS_Store
+public/.DS_Store
+public/uploads/.DS_Store
+public/uploads/subcategories/.DS_Store
+src/.DS_Store

@@ -50,7 +50,7 @@ class Subcategory
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['subcategory:read'])]
+    #[Groups(['subcategory:read', 'client:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -61,19 +61,19 @@ class Subcategory
         minMessage: "Subcategory name must be at least {{ limit }} characters long",
         maxMessage: "Subcategory name cannot be longer than {{ limit }} characters"
     )]
-    #[Groups(['subcategory:read', 'subcategory:write'])]
+    #[Groups(['subcategory:read', 'subcategory:write', 'client:read'])]
     private ?string $name = null;
 
     #[ORM\Column]
     #[Assert\NotNull(message: "Price coefficient is required")]
     #[Assert\Positive(message: "Price coefficient must be a positive number")]
-    #[Groups(['subcategory:read', 'subcategory:write'])]
+    #[Groups(['subcategory:read', 'subcategory:write', 'client:read'])]
     private ?float $price_coefficient = null;
 
     #[ORM\ManyToOne(inversedBy: 'subcategories')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull(message: "Category is required")]
-    #[Groups(['subcategory:read', 'subcategory:write'])]
+    #[Groups(['subcategory:read', 'subcategory:write', 'client:read'])]
     private ?Category $category = null;
 
     /**

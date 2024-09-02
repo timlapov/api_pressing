@@ -71,6 +71,7 @@ security:
         - { path: ^/api/categories, roles: PUBLIC_ACCESS, methods: [ GET ] }
         - { path: ^/api/cities, roles: PUBLIC_ACCESS, methods: [ GET ] }
         - { path: ^/api/clients, roles: PUBLIC_ACCESS, methods: [ POST ] }
+        - { path: ^/api/clients, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/countries, roles: PUBLIC_ACCESS, methods: [ GET ] }
         - { path: ^/api/employees, roles: ROLE_EMPLOYEE }
         - { path: ^/api/fabrics, roles: PUBLIC_ACCESS, methods: [ GET ] }

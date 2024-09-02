@@ -20,6 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
@@ -36,10 +37,11 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Post(
             security: "is_granted('PUBLIC_ACCESS')",
+            validationContext: ['groups' => ['Default', 'create']]
         ),
         new Put(
             security: "is_granted('ROLE_ADMIN') or object == user",
-            securityMessage: "You can only edit your own profile."
+            securityMessage: "You can only edit your own profile.",
         ),
         new Patch(
             security: "is_granted('ROLE_ADMIN') or object == user",
@@ -79,7 +81,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'password is required')]
+    #[Assert\NotBlank(message: 'password is required', groups: ['create'])]
     #[Assert\Length(min: 8, minMessage: 'password must be at least {{ limit }} characters long')]
     #[Groups(['client:write'])]
     private ?string $password = null;
@@ -95,7 +97,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $surname = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    #[Groups(['client:read', 'client:write'])]
+    #[Groups(['client:read'])]
     private ?\DateTimeInterface $birthdate = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -233,8 +235,9 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setBirthdate(?\DateTimeInterface $birthdate): static
     {
-        $this->birthdate = $birthdate;
-
+        if ($this->birthdate === null) {
+            $this->birthdate = $birthdate;
+        }
         return $this;
     }
 
