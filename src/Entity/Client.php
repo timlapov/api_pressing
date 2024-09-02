@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -105,10 +106,12 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'clients')]
     #[Assert\NotBlank(message: 'city is required')]
     #[Groups(['client:read', 'client:write'])]
+    #[ApiProperty(readableLink: true)]
     private ?City $city = null;
 
     #[ORM\ManyToOne(inversedBy: 'clients')]
     #[Groups(['client:read', 'client:write'])]
+    #[ApiProperty(readableLink: true)]
     private ?Gender $gender = null;
 
     /**

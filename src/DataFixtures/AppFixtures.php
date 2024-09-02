@@ -124,7 +124,10 @@ class AppFixtures extends Fixture
         $country->setName('France');
         $manager->persist($country);
 
-        $cities = ['Paris', 'Lyon', 'Marseille', 'Bordeaux', 'Lille'];
+        $cities = [
+            'Lyon 69001', 'Lyon 69002', 'Lyon 69003', 'Lyon 69004', 'Lyon 69005', 'Lyon 69006', 'Lyon 69007',
+            'Lyon 69008', 'Lyon 69009', 'Villeurbanne 69100'
+        ];
         foreach ($cities as $cityName) {
             $city = new City();
             $city->setName($cityName);

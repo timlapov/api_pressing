@@ -50,12 +50,12 @@ class Gender
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['gender:read'])]
+    #[Groups(['gender:read', 'client:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'gender name is required')]
-    #[Groups(['gender:read', 'gender:write'])]
+    #[Groups(['gender:read', 'gender:write', 'client:read'])]
     private ?string $name = null;
 
     /**

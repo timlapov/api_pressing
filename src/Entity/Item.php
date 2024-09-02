@@ -77,11 +77,11 @@ class Item
     private ?Order $order_ = null;
 
     #[ORM\Column]
-    #[Groups(['item:read', 'item:write'])]
+    #[Groups(['item:read', 'order:write'])]
     private ?bool $ironing = false;
 
     #[ORM\Column]
-    #[Groups(['item:read', 'item:write'])]
+    #[Groups(['item:read', 'order:write'])]
     private ?bool $perfuming = false;
 
     private ?EntityManagerInterface $entityManager = null;
