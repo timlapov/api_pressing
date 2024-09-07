@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
@@ -53,6 +56,8 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['order:read']],
     denormalizationContext: ['groups' => ['order:write']]
 )]
+#[ApiFilter(ExistsFilter::class, properties: ['completed'])]
+#[ApiFilter(SearchFilter::class, properties: ['employee.id' => 'exact'])]
 class Order
 {
     #[ORM\Id]
@@ -64,7 +69,7 @@ class Order
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull(message: "Order status is required")]
-    #[Groups(['order:read', 'order:write', 'client:read'])]
+    #[Groups(['order:read', 'order:write', 'client:read', 'employee:read'])]
 //    #[ApiProperty(readableLink: true, writableLink: false)]
     private ?OrderStatus $orderStatus = null;
 
@@ -206,7 +211,7 @@ class Order
     }
 
 
-    #[Groups(['order:read'])]
+    #[Groups(['order:read', 'client:read'])]
     public function getTotalPrice(): float
     {
         $total = array_sum($this->items->map(fn(Item $item) => $item->getCalculatedPrice())->toArray());

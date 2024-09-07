@@ -61,7 +61,7 @@ class Subcategory
         minMessage: "Subcategory name must be at least {{ limit }} characters long",
         maxMessage: "Subcategory name cannot be longer than {{ limit }} characters"
     )]
-    #[Groups(['subcategory:read', 'subcategory:write', 'client:read'])]
+    #[Groups(['subcategory:read', 'subcategory:write', 'client:read', 'employee:read', 'order:read'])]
     private ?string $name = null;
 
     #[ORM\Column]
@@ -73,7 +73,7 @@ class Subcategory
     #[ORM\ManyToOne(inversedBy: 'subcategories')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull(message: "Category is required")]
-    #[Groups(['subcategory:read', 'subcategory:write', 'client:read'])]
+    #[Groups(['subcategory:read', 'subcategory:write', 'client:read', 'employee:read'])]
     private ?Category $category = null;
 
     /**

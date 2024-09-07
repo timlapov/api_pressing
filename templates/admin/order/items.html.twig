@@ -17,7 +17,7 @@
                 .setController('App\\Controller\\Admin\\ItemCrudController')
                 .setAction('detail')
                 .setEntityId(item.id) }}">
-                Item #{{ item.id }} - {{ item.subcategory.name }} ({{ item.fabric.name }}) : {{ item.service.name }}
+                Item #{{ item.id }} - {{ item.subcategory.name }} : {{ item.service.name }}
             </a>
         </div>
     {% endfor %}

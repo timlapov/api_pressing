@@ -67,7 +67,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     #[Assert\NotBlank(message: 'email is required')]
     #[Assert\Email(message: 'email is not valid')]
-    #[Groups(['client:read', 'client:write'])]
+    #[Groups(['client:read', 'client:write', 'employee:read', 'order:read'])]
     private ?string $email = null;
 
     /**
@@ -88,12 +88,12 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'name is required')]
-    #[Groups(['client:read', 'client:write'])]
+    #[Groups(['client:read', 'client:write', 'employee:read', 'order:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'surname is required')]
-    #[Groups(['client:read', 'client:write'])]
+    #[Groups(['client:read', 'client:write', 'employee:read', 'order:read'])]
     private ?string $surname = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
@@ -102,17 +102,17 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank(message: 'address is required')]
-    #[Groups(['client:read', 'client:write'])]
+    #[Groups(['client:read', 'client:write', 'order:read'])]
     private ?string $address = null;
 
     #[ORM\ManyToOne(inversedBy: 'clients')]
     #[Assert\NotBlank(message: 'city is required')]
-    #[Groups(['client:read', 'client:write'])]
+    #[Groups(['client:read', 'client:write', 'order:read'])]
     #[ApiProperty(readableLink: true)]
     private ?City $city = null;
 
     #[ORM\ManyToOne(inversedBy: 'clients')]
-    #[Groups(['client:read', 'client:write'])]
+    #[Groups(['client:read', 'client:write', 'order:read'])]
     #[ApiProperty(readableLink: true)]
     private ?Gender $gender = null;
 

@@ -55,7 +55,7 @@ class Category
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Name is required')]
-    #[Groups(['category:read', 'category:write', 'client:read'])]
+    #[Groups(['category:read', 'category:write', 'client:read', 'employee:read'])]
     private ?string $name = null;
 
     /**

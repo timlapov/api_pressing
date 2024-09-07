@@ -51,7 +51,7 @@ class OrderStatus
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['order_status:read', 'client:read'])]
+    #[Groups(['order_status:read', 'client:read', 'employee:read', 'order:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -62,7 +62,7 @@ class OrderStatus
         minMessage: "Status name must be at least {{ limit }} characters long",
         maxMessage: "Status name cannot be longer than {{ limit }} characters"
     )]
-    #[Groups(['order_status:read', 'order_status:write', 'client:read'])]
+    #[Groups(['order_status:read', 'order_status:write', 'client:read', 'employee:read', 'order:read'])]
     private ?string $name = null;
 
     /**

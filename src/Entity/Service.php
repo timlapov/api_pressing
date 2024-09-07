@@ -64,7 +64,7 @@ class Service
         minMessage: "Service name must be at least {{ limit }} characters long",
         maxMessage: "Service name cannot be longer than {{ limit }} characters"
     )]
-    #[Groups(['service:read', 'service:write'])]
+    #[Groups(['service:read', 'service:write', 'employee:read', 'order:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

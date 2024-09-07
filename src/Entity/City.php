@@ -57,7 +57,7 @@ class City
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'city name is required')]
-    #[Groups(['city:read', 'city:write', 'client:read'])]
+    #[Groups(['city:read', 'city:write', 'client:read', 'employee:read', 'order:read'])]
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'cities')]

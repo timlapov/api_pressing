@@ -70,7 +70,7 @@ class ItemCrudController extends AbstractCrudController
     {
         return $crud
             ->setDefaultSort(['id' => 'DESC'])
-            ->setSearchFields(['subcategory.name', 'fabric.name', 'service.name', 'additionalService.name', 'order_.id'])
+            ->setSearchFields(['subcategory.name', 'service.name', 'additionalService.name', 'order_.id'])
             ->setEntityLabelInSingular('Item')
             ->setEntityLabelInPlural('Items');
     }

@@ -55,7 +55,7 @@ class Gender
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'gender name is required')]
-    #[Groups(['gender:read', 'gender:write', 'client:read'])]
+    #[Groups(['gender:read', 'gender:write', 'client:read', 'employee:read', 'order:read'])]
     private ?string $name = null;
 
     /**

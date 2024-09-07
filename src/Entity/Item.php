@@ -59,14 +59,14 @@ class Item
     #[ORM\JoinColumn(nullable: false)]
 //    #[Groups(['item:read', 'item:write'])]
     #[ApiProperty(readableLink: true, writableLink: true)]
-    #[Groups(['order:read', 'order:write', 'client:read'])]
+    #[Groups(['order:read', 'order:write', 'client:read', 'employee:read'])]
     private ?Subcategory $subcategory = null;
 
     #[ORM\ManyToOne(inversedBy: 'items')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull(message: "Service is required")]
 //    #[Groups(['item:read', 'item:write'])]
-    #[Groups(['order:read', 'order:write', 'client:read'])]
+    #[Groups(['order:read', 'order:write', 'client:read', 'employee:read'])]
     #[ApiProperty(readableLink: true, writableLink: false)]
     private ?Service $service = null;
 
@@ -77,11 +77,11 @@ class Item
     private ?Order $order_ = null;
 
     #[ORM\Column]
-    #[Groups(['item:read', 'order:write', 'client:read'])]
+    #[Groups(['item:read', 'order:write', 'client:read', 'employee:read', 'order:read'])]
     private ?bool $ironing = false;
 
     #[ORM\Column]
-    #[Groups(['item:read', 'order:write', 'client:read'])]
+    #[Groups(['item:read', 'order:write', 'client:read', 'employee:read', 'order:read'])]
     private ?bool $perfuming = false;
 
     private ?EntityManagerInterface $entityManager = null;
