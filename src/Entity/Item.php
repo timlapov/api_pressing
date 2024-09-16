@@ -84,12 +84,6 @@ class Item
     #[Groups(['item:read', 'order:write', 'client:read', 'employee:read', 'order:read'])]
     private ?bool $perfuming = false;
 
-    private ?EntityManagerInterface $entityManager = null;
-    public function setEntityManager(EntityManagerInterface $entityManager): void
-    {
-        $this->entityManager = $entityManager;
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -141,14 +135,20 @@ class Item
         $price = $this->service->getPrice();
         $price *= $this->subcategory->getPriceCoefficient();
 
-        $coefficients = $this->entityManager->getRepository(ServiceCoefficients::class)->findOneBy([]);
+        $coefficients = $this->getOrder()->getServiceCoefficients();
+
+        if (empty($coefficients)) {
+            throw new \Exception('Service coefficients are not set in the order.');
+        }
 
         if ($this->ironing) {
-            $price *= $coefficients->getIroningCoefficient();
+            $ironingCoefficient = $coefficients['ironingCoefficient'] ?? 1.0;
+            $price *= $ironingCoefficient;
         }
 
         if ($this->perfuming) {
-            $price *= $coefficients->getPerfumingCoefficient();
+            $perfumingCoefficient = $coefficients['perfumingCoefficient'] ?? 1.0;
+            $price *= $perfumingCoefficient;
         }
 
         return $price;

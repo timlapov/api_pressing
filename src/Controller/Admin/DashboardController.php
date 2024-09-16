@@ -12,7 +12,7 @@ use App\Entity\Item;
 use App\Entity\Order;
 use App\Entity\OrderStatus;
 use App\Entity\Service;
-use App\Entity\ServiceCoefficients;
+use App\Entity\ServiceCoefficient;
 use App\Entity\Subcategory;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -82,7 +82,7 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Orders', 'fas fa-list', Order::class);
-        yield MenuItem::linkToCrud('Coefficients', 'fas fa-list', ServiceCoefficients::class);
+        yield MenuItem::linkToCrud('Coefficients', 'fas fa-list', ServiceCoefficient::class);
         yield MenuItem::linkToCrud('Categories', 'fas fa-list', Category::class);
         yield MenuItem::linkToCrud('Cities', 'fas fa-list', City::class);
         yield MenuItem::linkToCrud('Countries', 'fas fa-list', Country::class);

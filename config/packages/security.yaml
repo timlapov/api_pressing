@@ -85,6 +85,7 @@ security:
         - { path: ^/api/subcategories, roles: PUBLIC_ACCESS, methods: [ GET ] }
         - { path: ^/api/subcategories, roles: ROLE_ADMIN }
         - { path: ^/api/token/refresh, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/service_coefficients, roles: PUBLIC_ACCESS, methods: [ GET ]}
         - { path: ^/admin/login, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

@@ -54,7 +54,11 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
     ],
     normalizationContext: ['groups' => ['order:read']],
-    denormalizationContext: ['groups' => ['order:write']]
+    denormalizationContext: [
+        'groups' => ['order:write'],
+        'skip_null_values' => true,
+        'ignored_attributes' => ['serviceCoefficient']
+    ]
 )]
 #[ApiFilter(ExistsFilter::class, properties: ['completed'])]
 #[ApiFilter(SearchFilter::class, properties: ['employee.id' => 'exact'])]
@@ -103,16 +107,16 @@ class Order
     #[Groups(['order:read', 'order:write', 'client:read'])]
     private ?bool $express = false;
 
-    private ?EntityManagerInterface $entityManager = null;
-    public function setEntityManager(EntityManagerInterface $entityManager): void
-    {
-        $this->entityManager = $entityManager;
-    }
+    #[ORM\Column(type: Types::JSON, nullable: false)]
+    #[Groups(['order:read'])]
+    #[ApiProperty(readable: true, writable: false)]
+    private array $serviceCoefficients = [];
 
     public function __construct()
     {
         $this->items = new ArrayCollection();
         $this->created = new \DateTime();
+        $this->serviceCoefficients = [];
     }
 
     public function getId(): ?int
@@ -217,8 +221,9 @@ class Order
         $total = array_sum($this->items->map(fn(Item $item) => $item->getCalculatedPrice())->toArray());
 
         if ($this->express) {
-            $coefficients = $this->entityManager->getRepository(ServiceCoefficients::class)->findOneBy([]);
-            $total *= $coefficients->getExpressCoefficient();
+            $coefficients = $this->getServiceCoefficients();
+            $expressCoefficient = $coefficients['expressCoefficient'] ?? 1.0;
+            $total *= $expressCoefficient;
         }
 
         return $total;
@@ -233,6 +238,17 @@ class Order
     {
         $this->express = $express;
 
+        return $this;
+    }
+
+    public function getServiceCoefficients(): array
+    {
+        return $this->serviceCoefficients;
+    }
+
+    public function setServiceCoefficients(array $serviceCoefficients): self
+    {
+        $this->serviceCoefficients = $serviceCoefficients;
         return $this;
     }
 }

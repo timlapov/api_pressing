@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\ServiceCoefficients;
+use App\Entity\ServiceCoefficient;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<ServiceCoefficients>
+ * @extends ServiceEntityRepository<ServiceCoefficient>
  */
-class ServiceCoefficientsRepository extends ServiceEntityRepository
+class ServiceCoefficientRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ServiceCoefficients::class);
+        parent::__construct($registry, ServiceCoefficient::class);
     }
 
 //    /**
-//     * @return ServiceCoefficients[] Returns an array of ServiceCoefficients objects
+//     * @return ServiceCoefficient[] Returns an array of ServiceCoefficient objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -31,7 +31,7 @@ class ServiceCoefficientsRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?ServiceCoefficients
+//    public function findOneBySomeField($value): ?ServiceCoefficient
 //    {
 //        return $this->createQueryBuilder('s')
 //            ->andWhere('s.exampleField = :val')

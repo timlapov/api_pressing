@@ -35,7 +35,9 @@ namespace App\EventListener;
 
 use App\Entity\Order;
 use App\Entity\Client;
+use App\Entity\ServiceCoefficient;
 use App\Service\OrderAssignmentService;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Events;
@@ -48,11 +50,13 @@ class OrderCreationListener
 {
     private $orderAssignmentService;
     private $security;
+    private $entityManager;
 
-    public function __construct(OrderAssignmentService $orderAssignmentService, Security $security)
+    public function __construct(OrderAssignmentService $orderAssignmentService, Security $security, EntityManagerInterface $entityManager)
     {
         $this->orderAssignmentService = $orderAssignmentService;
         $this->security = $security;
+        $this->entityManager = $entityManager;
     }
 
     public function prePersist(LifecycleEventArgs $args): void
@@ -74,6 +78,26 @@ class OrderCreationListener
         }
 
         $entity->setClient($user);
+
+        // Получаем последние коэффициенты
+        $repository = $this->entityManager->getRepository(ServiceCoefficient::class);
+        $latestCoefficients = $repository->findOneBy([], ['id' => 'DESC']);
+
+        if ($latestCoefficients) {
+            $coefficientsArray = [
+                'expressCoefficient' => $latestCoefficients->getExpressCoefficient(),
+                'ironingCoefficient' => $latestCoefficients->getIroningCoefficient(),
+                'perfumingCoefficient' => $latestCoefficients->getPerfumingCoefficient(),
+            ];
+            $entity->setServiceCoefficients($coefficientsArray);
+        } else {
+            $coefficientsArray = [
+                'expressCoefficient' => 1.0,
+                'ironingCoefficient' => 1.0,
+                'perfumingCoefficient' => 1.0,
+            ];
+        }
+        $entity->setServiceCoefficients($coefficientsArray);
     }
 
     public function postPersist(LifecycleEventArgs $args): void

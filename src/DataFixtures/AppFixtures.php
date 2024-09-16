@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\ServiceCoefficients;
+use App\Entity\ServiceCoefficient;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Category;
@@ -183,7 +183,7 @@ class AppFixtures extends Fixture
         }
 
         // Service coefficients
-        $coefficients = new ServiceCoefficients();
+        $coefficients = new ServiceCoefficient();
         $coefficients->setExpressCoefficient(1.3);
         $coefficients->setIroningCoefficient(1.1);
         $coefficients->setPerfumingCoefficient(1.00);
