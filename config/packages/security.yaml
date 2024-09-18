@@ -29,6 +29,7 @@ security:
         api:
             pattern: ^/api/
             stateless: true
+            entry_point: jwt
             provider: all_users_provider
             json_login:
                 check_path: /api/login
@@ -37,6 +38,8 @@ security:
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
             jwt: ~
+            refresh_jwt:
+                check_path: /api/token/refresh
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -67,6 +70,7 @@ security:
     access_control:
         - { path: ^/doc, roles: PUBLIC_ACCESS }
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
         - { path: ^/api/additional_services, roles: PUBLIC_ACCESS, methods: [ GET ] }
         - { path: ^/api/categories, roles: PUBLIC_ACCESS, methods: [ GET ] }
         - { path: ^/api/cities, roles: PUBLIC_ACCESS, methods: [ GET ] }
