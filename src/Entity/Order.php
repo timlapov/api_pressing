@@ -21,6 +21,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Choice;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
@@ -111,6 +112,11 @@ class Order
     #[Groups(['order:read'])]
     #[ApiProperty(readable: true, writable: false)]
     private array $serviceCoefficients = [];
+
+    #[ORM\Column(length: 20)]
+    #[Groups(['order:read', 'order:write', 'client:read'])]
+    #[Choice(choices: ['cash', 'card'], message: 'Choose a valid payment method.')]
+    private ?string $paymentMethod = null;
 
     public function __construct()
     {
@@ -249,6 +255,18 @@ class Order
     public function setServiceCoefficients(array $serviceCoefficients): self
     {
         $this->serviceCoefficients = $serviceCoefficients;
+        return $this;
+    }
+
+    public function getPaymentMethod(): ?string
+    {
+        return $this->paymentMethod;
+    }
+
+    public function setPaymentMethod(string $paymentMethod): static
+    {
+        $this->paymentMethod = $paymentMethod;
+
         return $this;
     }
 }

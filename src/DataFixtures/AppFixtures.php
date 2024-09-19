@@ -19,175 +19,122 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-// Categories
-        $categories = [
-            'Chemises et chemisiers' => [
-                'Chemise' => 1.1,
-                'Chemisier' => 2.1,
-                'Polo' => 1.5,
-                'T-shirt' => 1.8
-            ],
-            'Pantalons et jupes' => [
-                'Pantalon' => 2.3,
-                'Jupe' => 2.3,
-                'Short' => 2.1
-            ],
-            'Costumes' => [
-                'Costume 2 pièces' => 4.9,
-                'Costume 3 pièces' => 6.4
-            ],
-            'Robes' => [
-                'Robe simple' => 3.8,
-                'Robe de soirée' => 6.4,
-                'Combinaison' => 4.9
-            ],
-            'Vêtements d\'extérieur' => [
-                'Veste' => 3.3,
-                'Manteau' => 5.6,
-                'Trench' => 6.6,
-                'Doudoune' => 7.7
-            ],
-            'Accessoires' => [
-                'Foulard' => 2.1,
-                'Cravate' => 2.1,
-                'Chaussettes' => 0.8
-            ],
-            'Linge de maison' => [
-                'Drap simple' => 1.3,
-                'Drap double' => 1.8,
-                'Housse de couette simple' => 2.1,
-                'Housse de couette double' => 2.8,
-                'Taie d\'oreiller' => 1.0
-            ],
-            'Articles en cuir' => [
-                'Chaussures en cuir' => 7.0,
-                'Bottes en cuir' => 8.0,
-                'Ceinture en cuir' => 4.0,
-                'Sac en cuir' => 9.0
-            ]
-        ];
+        // Вownload from file data.json
+        $data = json_decode(file_get_contents(__DIR__ . '/data.json'), true);
 
-        foreach ($categories as $categoryName => $subcategories) {
+        // Categories and Subcategories
+        foreach ($data['categories'] as $categoryData) {
             $category = new Category();
-            $category->setName($categoryName);
+            $category->setName($categoryData['name']);
             $manager->persist($category);
 
-            foreach ($subcategories as $subcategoryName => $priceCoefficient) {
+            foreach ($categoryData['subcategories'] as $subcategoryData) {
                 $subcategory = new Subcategory();
-                $subcategory->setName($subcategoryName);
+                $subcategory->setName($subcategoryData['name']);
                 $subcategory->setCategory($category);
-                $subcategory->setPriceCoefficient($priceCoefficient);
-                $subcategory->setImageUrl('placeholder.webp');
+                $subcategory->setPriceCoefficient($subcategoryData['priceCoefficient']);
+                $subcategory->setImageUrl($subcategoryData['imageUrl']);
                 $manager->persist($subcategory);
             }
         }
 
         // Services
-        $services = [
-            'Lavage' => [
-                'description' => 'Pour le linge de tous les jours, les draps et les serviettes.',
-                'price' => 1.9
-            ],
-            'Nettoyage à sec' => [
-                'description' => 'Il s\'agit d\'un traitement de nettoyage professionnel utilisant des solvants pour éliminer les taches et la saleté des tissus délicats.',
-                'price' => 3.9
-            ],
-            'Blanchiment' => [
-                'description' => 'Pour éliminer les taches tenaces et retrouver leur blancheur d\'origine.',
-                'price' => 2.9
-            ],
-            'Traitement anti-taches' => [
-                'description' => 'Pour protéger les vêtements contre les taches futures.',
-                'price' => 2.9
-            ]
-        ];
-
-        foreach ($services as $serviceName => $serviceData) {
+        foreach ($data['services'] as $serviceData) {
             $service = new Service();
-            $service->setName($serviceName);
+            $service->setName($serviceData['name']);
             $service->setDescription($serviceData['description']);
             $service->setPrice($serviceData['price']);
-            $service->setImageUrl('placeholder.webp');
+            $service->setImageUrl($serviceData['imageUrl']);
             $manager->persist($service);
         }
 
         // Genders
-        $genders = ['Homme', 'Femme', 'Personne non binaire', 'Autre'];
-        foreach ($genders as $genderName) {
+        foreach ($data['genders'] as $genderName) {
             $gender = new Gender();
             $gender->setName($genderName);
             $manager->persist($gender);
         }
 
         // Country and cities
+        $countryData = $data['country'];
         $country = new Country();
-        $country->setName('France');
+        $country->setName($countryData['name']);
         $manager->persist($country);
 
-        $cities = [
-            'Lyon 69001', 'Lyon 69002', 'Lyon 69003', 'Lyon 69004', 'Lyon 69005', 'Lyon 69006', 'Lyon 69007',
-            'Lyon 69008', 'Lyon 69009', 'Villeurbanne 69100'
-        ];
-        foreach ($cities as $cityName) {
+        foreach ($countryData['cities'] as $cityName) {
             $city = new City();
             $city->setName($cityName);
             $city->setCountry($country);
             $manager->persist($city);
         }
 
-        // Clients
-        for ($i = 1; $i <= 10; $i++) {
-            $client = new Client();
-            $client->setEmail("client$i@example.com");
-            $client->setRoles(['ROLE_USER']);
-            $client->setPassword('password'); // Password will be hashed by event listener
-            $client->setName("FirstName$i");
-            $client->setSurname("LastName$i");
-            $client->setBirthdate(new \DateTime('1980-01-01'));
-            $client->setAddress("$i Peace Street");
-            $client->setCity($manager->getRepository(City::class)->findOneBy([]));
-            $client->setGender($manager->getRepository(Gender::class)->findOneBy([]));
-            $manager->persist($client);
-        }
-
-// Admin (inactive)
-        $admin = new Employee();
-        $admin->setEmail("admin@admin.ru");
-        $admin->setRoles(['ROLE_ADMIN']);
-        $admin->setPassword('password'); // Password will be hashed by event listener
-        $admin->setName("Admin");
-        $admin->setSurname("Admin");
-        $admin->setPhoneNumber("0600000000");
-        $admin->setActive(false);
-        $manager->persist($admin);
-
-// Employees (active)
-        for ($i = 1; $i <= 5; $i++) {
-            $employee = new Employee();
-            $employee->setEmail("employee$i@example.com");
-            $employee->setRoles(['ROLE_EMPLOYEE']);
-            $employee->setPassword('password'); // Password will be hashed by event listener
-            $employee->setName("EmployeeFirstName$i");
-            $employee->setSurname("EmployeeLastName$i");
-            $employee->setPhoneNumber("060000000$i");
-            $employee->setActive(true);
-            $manager->persist($employee);
-        }
-
         // Order statuses
-        $orderStatuses = ['Créé', 'Payé', 'En attente', 'En traitement', 'Prêt', 'Livré'];
-        foreach ($orderStatuses as $statusName) {
+        foreach ($data['orderStatuses'] as $statusData) {
             $status = new OrderStatus();
-            $status->setName($statusName);
+            $status->setName($statusData['name']);
+            $status->setDescription($statusData['description']);
             $manager->persist($status);
         }
 
         // Service coefficients
+        $coefficientsData = $data['serviceCoefficients'];
         $coefficients = new ServiceCoefficient();
-        $coefficients->setExpressCoefficient(1.3);
-        $coefficients->setIroningCoefficient(1.1);
-        $coefficients->setPerfumingCoefficient(1.00);
+        $coefficients->setExpressCoefficient($coefficientsData['expressCoefficient']);
+        $coefficients->setIroningCoefficient($coefficientsData['ironingCoefficient']);
+        $coefficients->setPerfumingCoefficient($coefficientsData['perfumingCoefficient']);
         $manager->persist($coefficients);
+
+        // Lists of first and last names for random selection
+        $firstNames = $data['firstNames'];
+        $lastNames = $data['lastNames'];
+
+        // Getting repositories for randomly selecting city and gender
+        $cityRepository = $manager->getRepository(City::class);
+        $genderRepository = $manager->getRepository(Gender::class);
+
+        // Clients
+        for ($i = 1; $i <= 10; $i++) {
+            $client = new Client();
+            $firstName = $firstNames[array_rand($firstNames)];
+            $lastName = $lastNames[array_rand($lastNames)];
+            $client->setEmail("client$i@example.com");
+            $client->setRoles(['ROLE_USER']);
+            $client->setPassword('password'); // The password will be hashed by the event listener
+            $client->setName($firstName);
+            $client->setSurname($lastName);
+            $client->setBirthdate(new \DateTime('1980-01-01'));
+            $client->setAddress("$i Peace Street");
+            $client->setCity($cityRepository->findOneBy([], ['id' => 'ASC']));
+            $client->setGender($genderRepository->findOneBy([], ['id' => 'ASC']));
+            $manager->persist($client);
+        }
+
+        // Admin (inactive)
+        $admin = new Employee();
+        $admin->setEmail("admin@propre-propre.fr");
+        $admin->setRoles(['ROLE_ADMIN']);
+        $admin->setPassword('admin'); // The password will be hashed by the event listener
+        $admin->setName("Bernard");
+        $admin->setSurname("Magnenat");
+        $admin->setPhoneNumber("0600000000");
+        $admin->setActive(false);
+        $manager->persist($admin);
+
+        // Employees (active)
+        for ($i = 1; $i <= 5; $i++) {
+            $employee = new Employee();
+            $firstName = $firstNames[array_rand($firstNames)];
+            $lastName = $lastNames[array_rand($lastNames)];
+            $email = strtolower($firstName[0] . '.' . $lastName . $i . '@propre-propre.fr');
+            $employee->setEmail($email);
+            $employee->setRoles(['ROLE_EMPLOYEE']);
+            $employee->setPassword('password'); // The password will be hashed by the event listener
+            $employee->setName($firstName);
+            $employee->setSurname($lastName);
+            $employee->setPhoneNumber("060000000$i");
+            $employee->setActive(true);
+            $manager->persist($employee);
+        }
 
         $manager->flush();
     }

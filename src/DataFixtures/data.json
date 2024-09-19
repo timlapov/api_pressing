@@ -1,0 +1,316 @@
+{
+  "categories": [
+    {
+      "name": "Chemises et chemisiers",
+      "subcategories": [
+        {
+          "name": "Chemise",
+          "priceCoefficient": 1.1,
+          "imageUrl": "chemise.webp"
+        },
+        {
+          "name": "Chemisier",
+          "priceCoefficient": 2.1,
+          "imageUrl": "chemisier.webp"
+        },
+        {
+          "name": "Polo",
+          "priceCoefficient": 1.5,
+          "imageUrl": "polo.webp"
+        },
+        {
+          "name": "T-shirt",
+          "priceCoefficient": 1.8,
+          "imageUrl": "t-shirt.webp"
+        }
+      ]
+    },
+    {
+      "name": "Pantalons et jupes",
+      "subcategories": [
+        {
+          "name": "Pantalon",
+          "priceCoefficient": 2.3,
+          "imageUrl": "pantalon.webp"
+        },
+        {
+          "name": "Jupe",
+          "priceCoefficient": 2.3,
+          "imageUrl": "jupe.webp"
+        },
+        {
+          "name": "Jupe - Plissée",
+          "priceCoefficient": 3.3,
+          "imageUrl": "jupe-plisse.webp"
+        },
+        {
+          "name": "Short",
+          "priceCoefficient": 2.1,
+          "imageUrl": "short.webp"
+        }
+      ]
+    },
+    {
+      "name": "Costumes",
+      "subcategories": [
+        {
+          "name": "Veston",
+          "priceCoefficient": 3.5,
+          "imageUrl": "veston.webp"
+        },
+        {
+          "name": "Costume 2 pièces",
+          "priceCoefficient": 4.9,
+          "imageUrl": "costume-2p.webp"
+        },
+        {
+          "name": "Costume 3 pièces",
+          "priceCoefficient": 6.4,
+          "imageUrl": "costume-3p.webp"
+      },
+      {
+      "name": "Costume + chemise + cravate",
+      "priceCoefficient": 8.0,
+      "imageUrl": "costume-5p.webp"
+    }
+  ]
+},
+    {
+      "name": "Robes",
+      "subcategories": [
+        {
+          "name": "Robe simple",
+          "priceCoefficient": 3.8,
+          "imageUrl": "robe-simple.webp"
+        },
+        {
+          "name": "Robe de soirée",
+          "priceCoefficient": 6.4,
+          "imageUrl": "robe-soiree.webp"
+        },
+        {
+          "name": "Combinaison",
+          "priceCoefficient": 4.9,
+          "imageUrl": "combinaison.webp"
+        }
+      ]
+    },
+    {
+      "name": "Vêtements d'extérieur",
+      "subcategories": [
+        {
+          "name": "Veste",
+          "priceCoefficient": 3.3,
+          "imageUrl": "veste.webp"
+        },
+        {
+          "name": "Manteau",
+          "priceCoefficient": 5.6,
+          "imageUrl": "manteau.webp"
+        },
+        {
+          "name": "Trench",
+          "priceCoefficient": 6.6,
+          "imageUrl": "trench.webp"
+        },
+        {
+          "name": "Doudoune",
+          "priceCoefficient": 7.7,
+          "imageUrl": "doudoune.webp"
+        }
+      ]
+    },
+    {
+      "name": "Accessoires",
+      "subcategories": [
+        {
+          "name": "Foulard",
+          "priceCoefficient": 2.1,
+          "imageUrl": "foulard.webp"
+        },
+        {
+          "name": "Cravate",
+          "priceCoefficient": 2.1,
+          "imageUrl": "cravate.webp"
+        },
+        {
+          "name": "Nœud papillon",
+          "priceCoefficient": 2.0,
+          "imageUrl": "noeud.webp"
+        },
+        {
+          "name": "Chaussettes",
+          "priceCoefficient": 0.8,
+          "imageUrl": "chaussettes.webp"
+        }
+      ]
+    },
+    {
+      "name": "Linge de maison",
+      "subcategories": [
+        {
+          "name": "Drap simple",
+          "priceCoefficient": 1.3,
+          "imageUrl": "lit-1.webp"
+        },
+        {
+          "name": "Drap double",
+          "priceCoefficient": 1.8,
+          "imageUrl": "lit-2.webp"
+        },
+        {
+          "name": "Housse de couette simple",
+          "priceCoefficient": 2.1,
+          "imageUrl": "lit-1.webp"
+        },
+        {
+          "name": "Housse de couette double",
+          "priceCoefficient": 2.8,
+          "imageUrl": "lit-2.webp"
+        },
+        {
+          "name": "Taie d'oreiller",
+          "priceCoefficient": 1.0,
+          "imageUrl": "taie.webp"
+        },
+        {
+          "name": "Rideaux",
+          "priceCoefficient": 3.5,
+          "imageUrl": "rideaux.webp"
+        },
+        {
+          "name": "Serviette",
+          "priceCoefficient": 1.0,
+          "imageUrl": "serviette.webp"
+        },
+        {
+          "name": "Nappe",
+          "priceCoefficient": 2.0,
+          "imageUrl": "nappe.webp"
+        }
+      ]
+    },
+    {
+      "name": "Articles en cuir",
+      "subcategories": [
+        {
+          "name": "Chaussures en cuir",
+          "priceCoefficient": 7.0,
+          "imageUrl": "chaussures.webp"
+        },
+        {
+          "name": "Chaussures à talon",
+          "priceCoefficient": 8.0,
+          "imageUrl": "chaussures-talon.webp"
+        },
+        {
+          "name": "Ceinture en cuir",
+          "priceCoefficient": 4.0,
+          "imageUrl": "ceinture.webp"
+        },
+        {
+          "name": "Sac en cuir",
+          "priceCoefficient": 9.0,
+          "imageUrl": "sac-cuir.webp"
+        }
+      ]
+    }
+  ],
+  "services": [
+    {
+      "name": "Lavage",
+      "description": "Pour le linge de tous les jours, les draps et les serviettes.",
+      "price": 1.9,
+      "imageUrl": "placeholder.webp"
+    },
+    {
+      "name": "Nettoyage à sec",
+      "description": "Nettoyage professionnel avec solvants pour tissus délicats.",
+      "price": 3.9,
+      "imageUrl": "placeholder.webp"
+    },
+    {
+      "name": "Blanchiment",
+      "description": "Pour éliminer les taches tenaces et retrouver leur blancheur d'origine.",
+      "price": 2.8,
+      "imageUrl": "placeholder.webp"
+    },
+    {
+      "name": "Traitement anti-taches",
+      "description": "Pour protéger les vêtements contre les taches futures.",
+      "price": 2.95,
+      "imageUrl": "placeholder.webp"
+    }
+  ],
+  "genders": ["Homme", "Femme", "Personne non binaire", "Autre"],
+  "country": {
+    "name": "France",
+    "cities": [
+      "Lyon 69001",
+      "Lyon 69002",
+      "Lyon 69003",
+      "Lyon 69004",
+      "Lyon 69005",
+      "Lyon 69006",
+      "Lyon 69007",
+      "Lyon 69008",
+      "Lyon 69009",
+      "Villeurbanne 69100"
+    ]
+  },
+  "orderStatuses": [
+    {
+      "name": "Créé",
+      "description": "Votre commande a été créée avec succès et est en attente de paiement."
+    },
+    {
+      "name": "Payé",
+      "description": "Le paiement pour votre commande a été reçu et confirmé."
+    },
+    {
+      "name": "En attente",
+      "description": "Votre commande est en attente de traitement par notre équipe."
+    },
+    {
+      "name": "En traitement",
+      "description": "Nos experts sont en train de traiter vos articles avec soin."
+    },
+    {
+      "name": "Prêt",
+      "description": "Votre commande est prête à être récupérée ou livrée."
+    },
+    {
+      "name": "Livré",
+      "description": "Votre commande a été livrée ou récupérée avec succès."
+    }
+  ],
+  "serviceCoefficients": {
+    "expressCoefficient": 1.3,
+    "ironingCoefficient": 1.1,
+    "perfumingCoefficient": 1.0
+  },
+  "firstNames": [
+    "Pierre",
+    "Marie",
+    "Jean",
+    "Sophie",
+    "Luc",
+    "Emma",
+    "Louis",
+    "Julie",
+    "Paul",
+    "Anna"
+  ],
+  "lastNames": [
+    "Dubois",
+    "Lefevre",
+    "Moreau",
+    "Girard",
+    "Durand",
+    "Leroy",
+    "Roux",
+    "Petit",
+    "Bernard",
+    "Martin"
+  ]
+}
