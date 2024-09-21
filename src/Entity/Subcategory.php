@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     operations: [
         new GetCollection(
+            paginationEnabled: false,
             security: "is_granted('PUBLIC_ACCESS')"
         ),
         new Get(

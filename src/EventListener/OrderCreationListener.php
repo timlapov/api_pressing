@@ -79,7 +79,7 @@ class OrderCreationListener
 
         $entity->setClient($user);
 
-        // Получаем последние коэффициенты
+        // We get the last coefficients
         $repository = $this->entityManager->getRepository(ServiceCoefficient::class);
         $latestCoefficients = $repository->findOneBy([], ['id' => 'DESC']);
 
@@ -98,6 +98,16 @@ class OrderCreationListener
             ];
         }
         $entity->setServiceCoefficients($coefficientsArray);
+
+        // Calculate and set the price for each item
+        foreach ($entity->getItems() as $item) {
+            // Set the subcategory coefficient
+            $subcategoryCoefficient = $item->getSubcategory()->getPriceCoefficient();
+            $item->setSubcategoryCoefficient($subcategoryCoefficient);
+            // Calculate and set the price
+            $calculatedPrice = $item->getCalculatedPrice();
+            $item->setPrice($calculatedPrice);
+        }
     }
 
     public function postPersist(LifecycleEventArgs $args): void

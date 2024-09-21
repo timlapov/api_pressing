@@ -84,6 +84,18 @@ class Item
     #[Groups(['item:read', 'order:write', 'client:read', 'employee:read', 'order:read'])]
     private ?bool $perfuming = false;
 
+    #[ORM\Column]
+    #[Groups(['item:read', 'item:write', 'order:read', 'client:read'])]
+    private ?float $price = null;
+
+    #[ORM\Column]
+    #[Groups(['item:read', 'order:write', 'client:read', 'employee:read', 'order:read'])]
+    private ?float $subcategoryCoefficient = null;
+
+    #[ORM\Column]
+    #[Groups(['item:read', 'order:write', 'client:read', 'employee:read', 'order:read'])]
+    private int $quantity = 1;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -128,12 +140,14 @@ class Item
     #[Groups(['item:read'])]
     public function getCalculatedPrice(): float
     {
-        if ($this->service === null || $this->subcategory === null) {
+        if ($this->service === null) {
             return 0.0;
         }
 
         $price = $this->service->getPrice();
-        $price *= $this->subcategory->getPriceCoefficient();
+
+        // Use the stored subcategory coefficient
+        $price *= $this->subcategoryCoefficient ?? $this->subcategory->getPriceCoefficient();
 
         $coefficients = $this->getOrder()->getServiceCoefficients();
 
@@ -150,6 +164,9 @@ class Item
             $perfumingCoefficient = $coefficients['perfumingCoefficient'] ?? 1.0;
             $price *= $perfumingCoefficient;
         }
+
+        // Multiply by quantity
+        $price *= $this->quantity;
 
         return $price;
     }
@@ -175,6 +192,39 @@ class Item
     {
         $this->perfuming = $perfuming;
 
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price): static
+    {
+        $this->price = $price;
+        return $this;
+    }
+
+    public function getSubcategoryCoefficient(): ?float
+    {
+        return $this->subcategoryCoefficient;
+    }
+
+    public function setSubcategoryCoefficient(float $subcategoryCoefficient): self
+    {
+        $this->subcategoryCoefficient = $subcategoryCoefficient;
+        return $this;
+    }
+
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): static
+    {
+        $this->quantity = $quantity;
         return $this;
     }
 
