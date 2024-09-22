@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Votre commande est prête - Propre-Propre</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #212121;
+            background-color: #F4F4F4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #FFFFFF;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo {
+            max-width: 200px;
+            height: auto;
+        }
+        h1 {
+            color: #5857D8;
+        }
+        .order-details {
+            background-color: #F4F4F4;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .item {
+            margin-bottom: 10px;
+        }
+        .total {
+            font-weight: bold;
+            color: #5857D8;
+        }
+        .status {
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666666;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <img src="https://lapov.art/assets/img/propre-propre-logo.png" alt="Logo Propre-Propre" class="logo">
+        <h1>Votre commande est prête !</h1>
+    </div>
+
+    <p>Bonjour {{ client.name }} {{ client.surname }} 👋</p>
+    <p>Nous avons le plaisir de vous informer que votre commande n°{{ order.id }} est désormais <span class="status">prête</span>.</p>
+
+    <p>Nous vous remercions de votre confiance et sommes impatients de vous accueillir dans notre boutique pour le retrait de votre commande.</p>
+
+    <p>Si vous avez des questions ou besoin d'informations supplémentaires, n'hésitez pas à nous contacter.</p>
+
+    <p>Cordialement,<br>L'équipe Propre-Propre</p>
+
+    <div class="footer">
+        <p>Propre-Propre - 123 Rue de la Propreté, 69000 Lyon<br>
+            Tél : 04 78 12 34 56 - Email : info@propre-propre.fr</p>
+    </div>
+</div>
+</body>
+</html>
