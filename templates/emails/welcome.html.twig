@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Bienvenue chez Propre-Propre !</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #212121;
+            background-color: #F4F4F4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #FFFFFF;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo {
+            max-width: 200px;
+            height: auto;
+        }
+        h1 {
+            color: #5857D8;
+        }
+        .welcome-message {
+            background-color: #F4F4F4;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: #CEDD2A;
+            color: #212121;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666666;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <img src="chemin/vers/votre/logo.png" alt="Logo Propre-Propre" class="logo">
+        <h1>Bienvenue chez Propre-Propre !</h1>
+    </div>
+
+    <div class="welcome-message">
+        <p>Bonjour {{ user.firstName }} {{ user.lastName }},</p>
+        <p>Nous sommes ravis de vous accueillir dans la famille Propre-Propre ! Merci d'avoir choisi nos services pour prendre soin de vos vêtements.</p>
+    </div>
+
+    <p>Votre compte est maintenant actif, ce qui signifie que vous pouvez profiter de tous nos services de nettoyage et de blanchisserie professionnels.</p>
+
+    <p>Voici ce que vous pouvez faire dès maintenant :</p>
+    <ul>
+        <li>Consulter notre gamme complète de services</li>
+        <li>Planifier votre première commande</li>
+        <li>Profiter de nos offres spéciales pour les nouveaux clients</li>
+    </ul>
+
+    <p style="text-align: center;">
+        <a href="https://propre-propre.lapov.art/login" class="cta-button">Accéder à mon compte</a>
+    </p>
+
+    <p>Si vous avez des questions ou besoin d'aide pour démarrer, notre équipe du service client est là pour vous. N'hésitez pas à nous contacter à <a href="mailto:info@propre-propre.fr">info@propre-propre.fr</a> ou par téléphone au 04 78 12 34 56.</p>
+
+    <p>Nous sommes impatients de vous servir et de vous offrir une expérience de nettoyage exceptionnelle !</p>
+
+    <p>Cordialement,<br>L'équipe Propre-Propre</p>
+
+    <div class="footer">
+        <p>Propre-Propre - 123 Rue de la Propreté, 69000 Lyon<br>
+            Tél : 04 78 12 34 56 - Email : info@propre-propre.fr</p>
+    </div>
+</div>
+</body>
+</html>

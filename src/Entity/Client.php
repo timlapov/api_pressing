@@ -97,7 +97,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $surname = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    #[Groups(['client:read'])]
+    #[Groups(['client:read', 'client:write'])]
     private ?\DateTimeInterface $birthdate = null;
 
     #[ORM\Column(type: Types::TEXT)]
