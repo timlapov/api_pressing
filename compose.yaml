@@ -1,21 +1,79 @@
-version: '3'
-
 services:
-###> doctrine/doctrine-bundle ###
-  database:
-    image: postgres:${POSTGRES_VERSION:-16}-alpine
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
+  nginx:
+    build:
+      context: ./docker/nginx
     volumes:
-      - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+      - .:/api
+      - .env:/api/.env
+      - .env.local:/api/.env.local
+    container_name: nginx-api
+    restart: always
+    ports:
+      - "8081:80"
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    build:
+      context: ./docker/php-fpm
+    volumes:
+      - .:/api
+      - .env:/api/.env
+      - .env.local:/api/.env.local
+    container_name: php-fpm-api
+    restart: always
+    depends_on:
+      - mysql
+
+  php-cli:
+    build:
+      context: ./docker/php-cli
+    working_dir: /api
+    volumes:
+      - .:/api
+      - .env:/api/.env
+      - .env.local:/api/.env.local
+    command: sh -c "composer install"
+    container_name: php-cli-api
+    depends_on:
+      - php-fpm
+
+  mysql:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - mysql_api:/var/lib/mysql
+    container_name: mysql-api
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8082:80"
+    restart: no
+    environment:
+      PMA_HOST: mysql
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mailer:
+    image: axllent/mailpit
+    ports:
+      - "1025"
+      - "8025"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
 
 volumes:
-###> doctrine/doctrine-bundle ###
-  database_data:
-###< doctrine/doctrine-bundle ###
+  mysql_api:
