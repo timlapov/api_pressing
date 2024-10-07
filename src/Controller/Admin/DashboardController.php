@@ -81,17 +81,17 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Orders', 'fas fa-list', Order::class);
-        yield MenuItem::linkToCrud('Coefficients', 'fas fa-list', ServiceCoefficient::class);
-        yield MenuItem::linkToCrud('Categories', 'fas fa-list', Category::class);
-        yield MenuItem::linkToCrud('Cities', 'fas fa-list', City::class);
-        yield MenuItem::linkToCrud('Countries', 'fas fa-list', Country::class);
-        yield MenuItem::linkToCrud('Clients', 'fas fa-list', Client::class);
-        yield MenuItem::linkToCrud('Employees', 'fas fa-list', Employee::class);
-        yield MenuItem::linkToCrud('Genders', 'fas fa-list', Gender::class);
-        yield MenuItem::linkToCrud('Items', 'fas fa-list', Item::class);
-        yield MenuItem::linkToCrud('Order Statuses', 'fas fa-list', OrderStatus::class);
-        yield MenuItem::linkToCrud('Services', 'fas fa-list', Service::class);
-        yield MenuItem::linkToCrud('Subcategories', 'fas fa-list', Subcategory::class);
+        yield MenuItem::linkToCrud('Orders', 'fa fa-shopping-cart', Order::class);
+        yield MenuItem::linkToCrud('Coefficients', 'fa fa-calculator', ServiceCoefficient::class);
+        yield MenuItem::linkToCrud('Categories', 'fa fa-folder-open', Category::class);
+        yield MenuItem::linkToCrud('Cities', 'fa fa-city', City::class);
+        yield MenuItem::linkToCrud('Countries', 'fa fa-globe', Country::class);
+        yield MenuItem::linkToCrud('Clients', 'fa fa-users', Client::class);
+        yield MenuItem::linkToCrud('Employees', 'fa fa-user-tie', Employee::class);
+        yield MenuItem::linkToCrud('Genders', 'fa fa-venus-mars', Gender::class);
+        yield MenuItem::linkToCrud('Items', 'fa fa-box', Item::class);
+        yield MenuItem::linkToCrud('Order Statuses', 'fa fa-list-check', OrderStatus::class);
+        yield MenuItem::linkToCrud('Services', 'fa fa-concierge-bell', Service::class);
+        yield MenuItem::linkToCrud('Subcategories', 'fa fa-tags', Subcategory::class);
     }
 }

@@ -89,7 +89,7 @@ class Item
     private ?float $price = null;
 
     #[ORM\Column]
-    #[Groups(['item:read', 'order:write', 'client:read', 'employee:read', 'order:read'])]
+    #[Groups(['item:read', 'client:read', 'employee:read', 'order:read'])]
     private ?float $subcategoryCoefficient = null;
 
     #[ORM\Column]

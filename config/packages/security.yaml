@@ -71,7 +71,6 @@ security:
         - { path: ^/doc, roles: PUBLIC_ACCESS }
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
-        - { path: ^/api/additional_services, roles: PUBLIC_ACCESS, methods: [ GET ] }
         - { path: ^/api/categories, roles: PUBLIC_ACCESS, methods: [ GET ] }
         - { path: ^/api/cities, roles: PUBLIC_ACCESS, methods: [ GET ] }
         - { path: ^/api/clients, roles: PUBLIC_ACCESS, methods: [ POST ] }

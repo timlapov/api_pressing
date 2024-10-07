@@ -1,35 +1,4 @@
 <?php
-//
-//namespace App\EventListener;
-//
-//use App\Entity\Order;
-//use App\Service\OrderAssignmentService;
-//use Doctrine\Persistence\Event\LifecycleEventArgs;
-//use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
-//use Doctrine\ORM\Events;
-//
-//#[AsDoctrineListener(event: Events::postPersist)]
-//class OrderCreationListener
-//{
-//    private $orderAssignmentService;
-//
-//    public function __construct(OrderAssignmentService $orderAssignmentService)
-//    {
-//        $this->orderAssignmentService = $orderAssignmentService;
-//    }
-//
-//    public function postPersist(LifecycleEventArgs $args): void
-//    {
-//        $entity = $args->getObject();
-//
-//        if (!$entity instanceof Order) {
-//            return;
-//        }
-//
-//        $this->orderAssignmentService->assignEmployeeToOrder($entity);
-//    }
-//}
-
 
 namespace App\EventListener;
 
