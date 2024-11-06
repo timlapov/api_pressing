@@ -268,8 +268,8 @@
       "description": "Le paiement pour votre commande a été reçu et confirmé."
     },
     {
-      "name": "En attente",
-      "description": "Votre commande est en attente de traitement par notre équipe."
+      "name": "Déposé",
+      "description": "Votre commande est déposée et en attente de traitement par notre équipe."
     },
     {
       "name": "En traitement",

@@ -96,11 +96,11 @@ class ResetPasswordController extends AbstractController
         $resetUrl = $frontendUrl . '/client/reset-password?token=' . urlencode($resetToken);
 
         $email = (new Email())
-            ->from(new Address('info@propre-propre.fr', 'ProprePropre'))
+            ->from(new Address('propre-propre@lapov.art', 'ProprePropre'))
             ->to($user->getEmail())
             ->subject('Votre demande de réinitialisation de mot de passe')
             ->text(sprintf(
-                "Bonjour %s,\n\nPour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous :\n\n%s\n\nCe lien expirera dans %d heure(s).\n\nSi vous n'avez pas demandé de réinitialisation de mot de passe, veuillez ignorer cet e-mail.",
+                "Bonjour %s,\n\nPour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous :\n\n%s\n\nCe lien expirera dans 1 heure.\n\nSi vous n'avez pas demandé de réinitialisation de mot de passe, veuillez ignorer cet e-mail.",
                 $user->getName(),
                 $resetUrl,
                 $this->resetPasswordHelper->getTokenLifetime() / 3600

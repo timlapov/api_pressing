@@ -56,6 +56,10 @@ For development purposes, you can use the following commands:
 
 API documentation is available at `/doc` after starting the server.
 
+## License
+
+This project is provided under a restricted license. It is available for viewing purposes only to demonstrate the author's skills for potential employers. Use of the code, including but not limited to copying, modifying, or redistributing, is strictly prohibited without explicit permission.
+
 ## Additional Information
 
 For more information about Symfony, visit the [official Symfony documentation](https://symfony.com/doc/current/index.html).

@@ -120,7 +120,7 @@ class OrderCreationListener
 
         // Create the email
         $email = (new Email())
-            ->from('info@propre-propre.fr')
+            ->from('propre-propre@lapov.art')
             ->to($client->getEmail())
             ->subject('Confirmation de votre commande')
             ->html($emailContent);

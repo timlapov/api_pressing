@@ -85,7 +85,7 @@ class OrderStatusListener
 
         // Creating and sending email
         $email = (new Email())
-            ->from('info@propre-propre.fr')
+            ->from('propre-propre@lapov.art')
             ->to($client->getEmail())
             ->subject('Votre commande est prête')
             ->html($emailContent);
